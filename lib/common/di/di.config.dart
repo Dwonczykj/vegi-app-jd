@@ -68,7 +68,7 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i15.PeeplPaySerivce>(
       () => _i15.PeeplPaySerivce(get<_i3.Dio>()));
   gh.lazySingleton<_i16.PhoneNumberUtil>(() => phone.phoneNumberUtil);
-  gh.singleton<_i17.RootRouter>(servicesModule.rootRouter);
+  gh.lazySingleton<_i17.RootRouter>(() => servicesModule.rootRouter);
   gh.lazySingleton<_i18.StripePayService>(
       () => _i18.StripePayService(get<_i3.Dio>()));
   gh.lazySingleton<_i9.StudioApi>(() => servicesModule.api);

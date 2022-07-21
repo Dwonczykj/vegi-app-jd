@@ -24,6 +24,12 @@ mixin _$CashWalletState {
   bool get isDepositBanner => throw _privateConstructorUsedError;
   @JsonKey(fromJson: tokensFromJson)
   Map<String, Token> get tokens => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: transactionsFromJson)
+  Map<String, PaymentTransaction> get transactions =>
+      throw _privateConstructorUsedError;
+  @JsonKey(fromJson: paymentRequestFromJson)
+  Map<String, PaymentRequest> get paymentRequests =>
+      throw _privateConstructorUsedError;
   @JsonKey(fromJson: communitiesFromJson)
   Map<String, Community> get communities => throw _privateConstructorUsedError;
   @JsonKey(fromJson: walletActionsFromJson)
@@ -55,6 +61,10 @@ abstract class $CashWalletStateCopyWith<$Res> {
       bool isDepositBanner,
       @JsonKey(fromJson: tokensFromJson)
           Map<String, Token> tokens,
+      @JsonKey(fromJson: transactionsFromJson)
+          Map<String, PaymentTransaction> transactions,
+      @JsonKey(fromJson: paymentRequestFromJson)
+          Map<String, PaymentRequest> paymentRequests,
       @JsonKey(fromJson: communitiesFromJson)
           Map<String, Community> communities,
       @JsonKey(fromJson: walletActionsFromJson)
@@ -87,6 +97,8 @@ class _$CashWalletStateCopyWithImpl<$Res>
     Object? communityAddress = freezed,
     Object? isDepositBanner = freezed,
     Object? tokens = freezed,
+    Object? transactions = freezed,
+    Object? paymentRequests = freezed,
     Object? communities = freezed,
     Object? walletActions = freezed,
     Object? isCommunityLoading = freezed,
@@ -108,6 +120,14 @@ class _$CashWalletStateCopyWithImpl<$Res>
           ? _value.tokens
           : tokens // ignore: cast_nullable_to_non_nullable
               as Map<String, Token>,
+      transactions: transactions == freezed
+          ? _value.transactions
+          : transactions // ignore: cast_nullable_to_non_nullable
+              as Map<String, PaymentTransaction>,
+      paymentRequests: paymentRequests == freezed
+          ? _value.paymentRequests
+          : paymentRequests // ignore: cast_nullable_to_non_nullable
+              as Map<String, PaymentRequest>,
       communities: communities == freezed
           ? _value.communities
           : communities // ignore: cast_nullable_to_non_nullable
@@ -163,6 +183,10 @@ abstract class _$$_CashWalletStateCopyWith<$Res>
       bool isDepositBanner,
       @JsonKey(fromJson: tokensFromJson)
           Map<String, Token> tokens,
+      @JsonKey(fromJson: transactionsFromJson)
+          Map<String, PaymentTransaction> transactions,
+      @JsonKey(fromJson: paymentRequestFromJson)
+          Map<String, PaymentRequest> paymentRequests,
       @JsonKey(fromJson: communitiesFromJson)
           Map<String, Community> communities,
       @JsonKey(fromJson: walletActionsFromJson)
@@ -198,6 +222,8 @@ class __$$_CashWalletStateCopyWithImpl<$Res>
     Object? communityAddress = freezed,
     Object? isDepositBanner = freezed,
     Object? tokens = freezed,
+    Object? transactions = freezed,
+    Object? paymentRequests = freezed,
     Object? communities = freezed,
     Object? walletActions = freezed,
     Object? isCommunityLoading = freezed,
@@ -219,6 +245,14 @@ class __$$_CashWalletStateCopyWithImpl<$Res>
           ? _value.tokens
           : tokens // ignore: cast_nullable_to_non_nullable
               as Map<String, Token>,
+      transactions: transactions == freezed
+          ? _value.transactions
+          : transactions // ignore: cast_nullable_to_non_nullable
+              as Map<String, PaymentTransaction>,
+      paymentRequests: paymentRequests == freezed
+          ? _value.paymentRequests
+          : paymentRequests // ignore: cast_nullable_to_non_nullable
+              as Map<String, PaymentRequest>,
       communities: communities == freezed
           ? _value.communities
           : communities // ignore: cast_nullable_to_non_nullable
@@ -258,14 +292,26 @@ class _$_CashWalletState extends _CashWalletState with DiagnosticableTreeMixin {
   _$_CashWalletState(
       {this.communityAddress = '',
       this.isDepositBanner = true,
-      @JsonKey(fromJson: tokensFromJson) this.tokens = const {},
-      @JsonKey(fromJson: communitiesFromJson) this.communities = const {},
-      @JsonKey(fromJson: walletActionsFromJson) this.walletActions,
-      @JsonKey(ignore: true) this.isCommunityLoading = false,
-      @JsonKey(ignore: true) this.isCommunityFetched = false,
-      @JsonKey(ignore: true) this.isTransfersFetchingStarted = false,
-      @JsonKey(ignore: true) this.isCommunityBusinessesFetched = false,
-      @JsonKey(ignore: true) this.isFetchingBalances = false})
+      @JsonKey(fromJson: tokensFromJson)
+          this.tokens = const {},
+      @JsonKey(fromJson: transactionsFromJson)
+          this.transactions = const {},
+      @JsonKey(fromJson: paymentRequestFromJson)
+          this.paymentRequests = const {},
+      @JsonKey(fromJson: communitiesFromJson)
+          this.communities = const {},
+      @JsonKey(fromJson: walletActionsFromJson)
+          this.walletActions,
+      @JsonKey(ignore: true)
+          this.isCommunityLoading = false,
+      @JsonKey(ignore: true)
+          this.isCommunityFetched = false,
+      @JsonKey(ignore: true)
+          this.isTransfersFetchingStarted = false,
+      @JsonKey(ignore: true)
+          this.isCommunityBusinessesFetched = false,
+      @JsonKey(ignore: true)
+          this.isFetchingBalances = false})
       : super._();
 
   factory _$_CashWalletState.fromJson(Map<String, dynamic> json) =>
@@ -280,6 +326,12 @@ class _$_CashWalletState extends _CashWalletState with DiagnosticableTreeMixin {
   @override
   @JsonKey(fromJson: tokensFromJson)
   final Map<String, Token> tokens;
+  @override
+  @JsonKey(fromJson: transactionsFromJson)
+  final Map<String, PaymentTransaction> transactions;
+  @override
+  @JsonKey(fromJson: paymentRequestFromJson)
+  final Map<String, PaymentRequest> paymentRequests;
   @override
   @JsonKey(fromJson: communitiesFromJson)
   final Map<String, Community> communities;
@@ -304,7 +356,7 @@ class _$_CashWalletState extends _CashWalletState with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CashWalletState(communityAddress: $communityAddress, isDepositBanner: $isDepositBanner, tokens: $tokens, communities: $communities, walletActions: $walletActions, isCommunityLoading: $isCommunityLoading, isCommunityFetched: $isCommunityFetched, isTransfersFetchingStarted: $isTransfersFetchingStarted, isCommunityBusinessesFetched: $isCommunityBusinessesFetched, isFetchingBalances: $isFetchingBalances)';
+    return 'CashWalletState(communityAddress: $communityAddress, isDepositBanner: $isDepositBanner, tokens: $tokens, transactions: $transactions, paymentRequests: $paymentRequests, communities: $communities, walletActions: $walletActions, isCommunityLoading: $isCommunityLoading, isCommunityFetched: $isCommunityFetched, isTransfersFetchingStarted: $isTransfersFetchingStarted, isCommunityBusinessesFetched: $isCommunityBusinessesFetched, isFetchingBalances: $isFetchingBalances)';
   }
 
   @override
@@ -315,6 +367,8 @@ class _$_CashWalletState extends _CashWalletState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('communityAddress', communityAddress))
       ..add(DiagnosticsProperty('isDepositBanner', isDepositBanner))
       ..add(DiagnosticsProperty('tokens', tokens))
+      ..add(DiagnosticsProperty('transactions', transactions))
+      ..add(DiagnosticsProperty('paymentRequests', paymentRequests))
       ..add(DiagnosticsProperty('communities', communities))
       ..add(DiagnosticsProperty('walletActions', walletActions))
       ..add(DiagnosticsProperty('isCommunityLoading', isCommunityLoading))
@@ -336,6 +390,10 @@ class _$_CashWalletState extends _CashWalletState with DiagnosticableTreeMixin {
             const DeepCollectionEquality()
                 .equals(other.isDepositBanner, isDepositBanner) &&
             const DeepCollectionEquality().equals(other.tokens, tokens) &&
+            const DeepCollectionEquality()
+                .equals(other.transactions, transactions) &&
+            const DeepCollectionEquality()
+                .equals(other.paymentRequests, paymentRequests) &&
             const DeepCollectionEquality()
                 .equals(other.communities, communities) &&
             const DeepCollectionEquality()
@@ -360,6 +418,8 @@ class _$_CashWalletState extends _CashWalletState with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(communityAddress),
       const DeepCollectionEquality().hash(isDepositBanner),
       const DeepCollectionEquality().hash(tokens),
+      const DeepCollectionEquality().hash(transactions),
+      const DeepCollectionEquality().hash(paymentRequests),
       const DeepCollectionEquality().hash(communities),
       const DeepCollectionEquality().hash(walletActions),
       const DeepCollectionEquality().hash(isCommunityLoading),
@@ -385,6 +445,10 @@ abstract class _CashWalletState extends CashWalletState {
       final bool isDepositBanner,
       @JsonKey(fromJson: tokensFromJson)
           final Map<String, Token> tokens,
+      @JsonKey(fromJson: transactionsFromJson)
+          final Map<String, PaymentTransaction> transactions,
+      @JsonKey(fromJson: paymentRequestFromJson)
+          final Map<String, PaymentRequest> paymentRequests,
       @JsonKey(fromJson: communitiesFromJson)
           final Map<String, Community> communities,
       @JsonKey(fromJson: walletActionsFromJson)
@@ -411,6 +475,14 @@ abstract class _CashWalletState extends CashWalletState {
   @override
   @JsonKey(fromJson: tokensFromJson)
   Map<String, Token> get tokens => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(fromJson: transactionsFromJson)
+  Map<String, PaymentTransaction> get transactions =>
+      throw _privateConstructorUsedError;
+  @override
+  @JsonKey(fromJson: paymentRequestFromJson)
+  Map<String, PaymentRequest> get paymentRequests =>
+      throw _privateConstructorUsedError;
   @override
   @JsonKey(fromJson: communitiesFromJson)
   Map<String, Community> get communities => throw _privateConstructorUsedError;

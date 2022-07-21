@@ -1,4 +1,5 @@
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/firebaseConfig.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/bottom_bar.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:vegan_liverpool/services.dart';
 
 class MainScreen extends StatefulWidget {
@@ -68,6 +69,9 @@ class _MainScreenState extends State<MainScreen> {
         }
       },
       child: StoreConnector<AppState, BottomBarViewModel>(
+        onInit: (store) => store.dispatch(RequestTransactionDataEventsAction()),
+        onDispose: (store) =>
+            store.dispatch(CancelTransactionDataEventsAction()),
         distinct: true,
         converter: BottomBarViewModel.fromStore,
         builder: (_, vm) => AutoTabsScaffold(

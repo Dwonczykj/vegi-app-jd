@@ -1,14 +1,16 @@
 import 'dart:math';
 
 import 'package:ethereum_addresses/ethereum_addresses.dart';
+import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/actions/actions.dart';
 import 'package:vegan_liverpool/models/actions/wallet_action.dart';
+import 'package:vegan_liverpool/models/cash_wallet_state.dart';
 import 'package:vegan_liverpool/models/community/community.dart';
+import 'package:vegan_liverpool/models/payment_request/payment_request.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
+import 'package:vegan_liverpool/models/transactions/transaction.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/actions/user_actions.dart';
-import 'package:vegan_liverpool/models/cash_wallet_state.dart';
-import 'package:redux/redux.dart';
 
 bool clearTokensWithZero(key, token) {
   if (token.timestamp == 0) return false;
@@ -58,6 +60,16 @@ final cashWalletReducers = combineReducers<CashWalletState>([
       _fetchingBusinessListFailed),
   TypedReducer<CashWalletState, SetIsFetchingBalances>(_setIsFetchingBalances),
   TypedReducer<CashWalletState, SetShowDepositBanner>(_setShowDepositBanner),
+  TypedReducer<CashWalletState, AddTransactionEventsAction>(_addTransactions),
+  TypedReducer<CashWalletState, VoidTransactionEventsAction>(_voidTransaction),
+  TypedReducer<CashWalletState, PaymentRequestOnDataEventAction>(
+      _paymentRequestOnDataEventAction),
+  TypedReducer<CashWalletState, CancelPaymentRequestDataEventsAction>(
+      _cancelPaymentRequestDataEventsAction),
+  TypedReducer<CashWalletState, TransactionOnDataEventAction>(
+      _transactionOnDataEventAction),
+  TypedReducer<CashWalletState, CancelTransactionDataEventsAction>(
+      _cancelTransactionDataEventsAction),
 ]);
 
 CashWalletState _createNewWalletSuccess(
@@ -410,4 +422,87 @@ CashWalletState _setShowDepositBanner(
   return state.copyWith(
     isDepositBanner: false,
   );
+}
+
+CashWalletState _addTransactions(
+  CashWalletState state,
+  AddTransactionEventsAction action,
+) {
+  // List<String> ids = action.transactions.map((e) => e.id).toList();
+  // Map<String, PaymentTransaction> newOnes = Map.fromIterable(state
+  //     .transactions.entries
+  //     .where((element) => !ids.contains(element.value.id)));
+  // newOnes.addAll(Map.fromIterable(
+  //     action.transactions.map((e) => new MapEntry(e.id, e)).toList()));
+  // return state.copyWith(transactions: newOnes);
+
+  Map<String, PaymentTransaction> newOne = Map.fromIterable(state
+      .transactions.entries
+      .where((element) => element.value.id != action.transaction.id));
+  newOne[action.transaction.id] = action.transaction;
+
+  return state.copyWith(transactions: newOne);
+}
+
+CashWalletState _voidTransaction(
+  CashWalletState state,
+  VoidTransactionEventsAction action,
+) {
+  final transaction = state.transactions[action.transactionId];
+  if (transaction == null) {
+    return state;
+  }
+  Map<String, PaymentTransaction> newOne = Map.fromIterable(state
+      .transactions.entries
+      .where((element) => element.value.id != action.transactionId));
+  newOne[action.transactionId] = transaction.copyWith(voided: true);
+
+  return state.copyWith(transactions: newOne);
+}
+
+CashWalletState _paymentRequestOnDataEventAction(
+  CashWalletState state,
+  PaymentRequestOnDataEventAction action,
+) {
+  // PaymentRequest paymentRequest = action.paymentRequest;
+  // if (state.paymentRequests.keys.contains(action.paymentRequest.paymentId)) {
+  //   paymentRequest = state.paymentRequests[action.paymentId]!;
+  // }
+  Map<String, PaymentRequest> newOne =
+      Map<String, PaymentRequest>.from(state.paymentRequests);
+  newOne[action.paymentRequest.paymentId] = action.paymentRequest;
+  return state.copyWith(paymentRequests: newOne);
+}
+
+CashWalletState _transactionOnDataEventAction(
+  CashWalletState state,
+  TransactionOnDataEventAction action,
+) {
+  // PaymentRequest paymentRequest = action.paymentRequest;
+  // if (state.paymentRequests.keys.contains(action.paymentRequest.paymentId)) {
+  //   paymentRequest = state.paymentRequests[action.paymentId]!;
+  // }
+  Map<String, PaymentTransaction> newOnes =
+      Map<String, PaymentTransaction>.from(state.transactions);
+  newOnes.addAll(
+      Map.fromEntries(action.transactions.map((t) => MapEntry(t.id, t))));
+  return state.copyWith(transactions: newOnes);
+}
+
+CashWalletState _cancelPaymentRequestDataEventsAction(
+  CashWalletState state,
+  CancelPaymentRequestDataEventsAction action,
+) {
+  //TODO: Show Flushbar saying that paymentRequest fetch could not complete
+  throw Exception('Unable to fetch paymentRequest, please push message to UI');
+  return state;
+}
+
+CashWalletState _cancelTransactionDataEventsAction(
+  CashWalletState state,
+  CancelTransactionDataEventsAction action,
+) {
+  //TODO: Show Flushbar saying that paymentRequest fetch could not complete
+  throw Exception('Unable to fetch transactions, please push message to UI');
+  return state;
 }

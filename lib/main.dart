@@ -1,21 +1,24 @@
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Router;
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_epics/redux_epics.dart';
+import 'package:redux_logging/redux_logging.dart';
+import 'package:redux_persist/redux_persist.dart';
+import 'package:redux_thunk/redux_thunk.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/app.dart';
-import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/middleware/firebase_middleware.dart';
+import 'package:vegan_liverpool/redux/reducers/app_reducer.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/storage.dart';
 import 'package:vegan_liverpool/utils/stripe.dart';
-import 'package:redux/redux.dart';
-import 'package:flutter/services.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:vegan_liverpool/redux/reducers/app_reducer.dart';
-import 'package:redux_persist/redux_persist.dart';
-import 'package:redux_thunk/redux_thunk.dart';
-import 'package:redux_logging/redux_logging.dart';
 
 Future<AppState> loadState(persistor) async {
   try {
@@ -37,12 +40,12 @@ void main() async {
 
   //choose a dev environment and load that file from .env folder
   // final envFile = env == 'prod' ? '.env' : '.env_qa';
-  await dotenv.load(fileName: 'environment/.env');
+  await dotenv.load(fileName: 'environment/.env_qa');
 
 // initialize stripe for payment
   new StripeService()..init();
 
-  await configureDependencies();
+  await configureDependencies(environment: Env.dev);
 
 //gets the entire app state from the user device storage.
   final Persistor<AppState> persistor = Persistor<AppState>(
@@ -58,6 +61,7 @@ void main() async {
   final List<Middleware<AppState>> wms = [
     thunkMiddleware,
     persistor.createMiddleware(),
+    EpicMiddleware(allEpics),
   ];
 
 // If the app is built in Debug mode, you want to add a logger which prints

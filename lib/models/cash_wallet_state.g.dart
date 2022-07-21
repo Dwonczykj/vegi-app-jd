@@ -13,6 +13,13 @@ _$_CashWalletState _$$_CashWalletStateFromJson(Map<String, dynamic> json) =>
       tokens: json['tokens'] == null
           ? const {}
           : tokensFromJson(json['tokens'] as Map<String, dynamic>?),
+      transactions: json['transactions'] == null
+          ? const {}
+          : transactionsFromJson(json['transactions'] as Map<String, dynamic>),
+      paymentRequests: json['paymentRequests'] == null
+          ? const {}
+          : paymentRequestFromJson(
+              json['paymentRequests'] as Map<String, dynamic>),
       communities: json['communities'] == null
           ? const {}
           : communitiesFromJson(json['communities'] as Map<String, dynamic>?),
@@ -25,6 +32,10 @@ Map<String, dynamic> _$$_CashWalletStateToJson(_$_CashWalletState instance) =>
       'communityAddress': instance.communityAddress,
       'isDepositBanner': instance.isDepositBanner,
       'tokens': instance.tokens.map((k, e) => MapEntry(k, e.toJson())),
+      'transactions':
+          instance.transactions.map((k, e) => MapEntry(k, e.toJson())),
+      'paymentRequests':
+          instance.paymentRequests.map((k, e) => MapEntry(k, e.toJson())),
       'communities':
           instance.communities.map((k, e) => MapEntry(k, e.toJson())),
       'walletActions': instance.walletActions?.toJson(),

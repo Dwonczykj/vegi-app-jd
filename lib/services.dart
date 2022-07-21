@@ -1,16 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:injectable/injectable.dart';
+import 'package:phone_number/phone_number.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/urls.dart';
+import 'package:vegan_liverpool/services/abstract_apis/iRestaurantsService.dart';
 import 'package:vegan_liverpool/services/apis/explorer.dart';
 import 'package:vegan_liverpool/services/apis/fuseswap.dart';
-import 'package:vegan_liverpool/services/apis/peeplPay.dart';
 import 'package:vegan_liverpool/services/apis/peeplEats.dart';
+import 'package:vegan_liverpool/services/apis/peeplPay.dart';
 import 'package:vegan_liverpool/services/apis/stripePay.dart';
 import 'package:vegan_liverpool/utils/onboard/Istrategy.dart';
-import 'package:phone_number/phone_number.dart';
 import 'package:wallet_core/wallet_core.dart';
 
 final RootRouter rootRouter = getIt<RootRouter>();
@@ -30,7 +32,10 @@ final WalletApi walletApi = getIt<WalletApi>();
 
 final FuseSwapService fuseSwapService = getIt<FuseSwapService>();
 
-final PeeplEatsService peeplEatsService = getIt<PeeplEatsService>();
+@Environment(Env.prod)
+@Environment(Env.dev)
+@Environment(Env.test)
+final IRestaraurantDeliveryService peeplEatsService = getIt<PeeplEatsService>();
 
 final StripePayService stripePayService = getIt<StripePayService>();
 

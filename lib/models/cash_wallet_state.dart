@@ -1,10 +1,12 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:vegan_liverpool/constants/addresses.dart';
 import 'package:vegan_liverpool/models/actions/actions.dart';
 import 'package:vegan_liverpool/models/actions/wallet_action.dart';
 import 'package:vegan_liverpool/models/community/community.dart';
+import 'package:vegan_liverpool/models/payment_request/payment_request.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
+import 'package:vegan_liverpool/models/transactions/transaction.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
 
 part 'cash_wallet_state.freezed.dart';
@@ -23,6 +25,45 @@ Map<String, Token> tokensFromJson(Map<String, dynamic>? tokens) => tokens == nul
           ),
         ),
       );
+
+Map<String, PaymentTransaction> transactionsFromJson(
+        Map<String, dynamic> transactions) =>
+    transactions.map(
+      (k, e) {
+        return MapEntry(
+          k,
+          PaymentTransaction.fromJson(
+            e as Map<String, dynamic>,
+          ),
+        );
+      },
+    );
+
+Map<String, PaymentRequest> paymentRequestFromJson(
+        Map<String, dynamic> paymentRequest) =>
+    paymentRequest.map(
+      (k, e) {
+        return MapEntry(
+          k,
+          PaymentRequest.fromJson(
+            e as Map<String, dynamic>,
+          ),
+        );
+      },
+    );
+
+// Map<String,T> _jsonSerializableTypeFromJson<T>(
+//         Map<String, dynamic> json) =>
+//     json.map(
+//       (k, e) {
+//         return MapEntry(
+//           k,
+//           T.fromJson(
+//             e as Map<String, dynamic>,
+//           ),
+//         );
+//       },
+//     );
 
 Map<String, Community> communitiesFromJson(Map<String, dynamic>? list) {
   if (list == null) {
@@ -50,6 +91,12 @@ class CashWalletState with _$CashWalletState {
     @Default('') String communityAddress,
     @Default(true) bool isDepositBanner,
     @JsonKey(fromJson: tokensFromJson) @Default({}) Map<String, Token> tokens,
+    @JsonKey(fromJson: transactionsFromJson)
+    @Default({})
+        Map<String, PaymentTransaction> transactions,
+    @JsonKey(fromJson: paymentRequestFromJson)
+    @Default({})
+        Map<String, PaymentRequest> paymentRequests,
     @JsonKey(fromJson: communitiesFromJson) @Default({}) Map<String, Community> communities,
     @JsonKey(fromJson: walletActionsFromJson) WalletActions? walletActions,
     @JsonKey(ignore: true) @Default(false) bool isCommunityLoading,
@@ -71,6 +118,8 @@ class CashWalletState with _$CashWalletState {
           Addresses.GBPX_TOKEN_ADDRESS,
           () => GBPxToken.copyWith(),
         ),
+      transactions: {},
+      paymentRequests: {},
       walletActions: WalletActions().copyWith(
         list: <WalletAction>[],
         updatedAt: 0,

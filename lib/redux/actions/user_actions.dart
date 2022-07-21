@@ -1,10 +1,20 @@
 import 'dart:io';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_segment/flutter_segment.dart';
-import 'package:vegan_liverpool/common/di/di.dart';
+
+import 'package:contacts_service/contacts_service.dart';
 import 'package:country_code_picker/country_code.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_segment/flutter_segment.dart';
+import 'package:flutter_udid/flutter_udid.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:phone_number/phone_number.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/urls.dart';
@@ -12,23 +22,15 @@ import 'package:vegan_liverpool/constants/variables.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
 import 'package:vegan_liverpool/models/wallet/wallet_modules.dart';
+import 'package:vegan_liverpool/redux/actions/action_utils.dart';
 import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/addresses.dart';
 import 'package:vegan_liverpool/utils/contacts.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:phone_number/phone_number.dart';
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:wallet_core/wallet_core.dart';
-import 'package:vegan_liverpool/services.dart';
-import 'package:contacts_service/contacts_service.dart';
-import 'package:vegan_liverpool/utils/phone.dart';
-import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_udid/flutter_udid.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
+import 'package:vegan_liverpool/utils/phone.dart';
+import 'package:wallet_core/wallet_core.dart';
 
 Future<bool> approvalCallback() async {
   return true;
@@ -66,6 +68,14 @@ class DepositBannerShowed {
 class SetSecurityType {
   BiometricAuth biometricAuth;
   SetSecurityType({required this.biometricAuth});
+}
+
+class SetTestMerchantMode {
+  SetTestMerchantMode();
+}
+
+class SetConsumerMode {
+  SetConsumerMode();
 }
 
 class CreateLocalAccountSuccess {
@@ -804,5 +814,31 @@ ThunkAction checkForSavedSeedPhrase() {
       //show the banner
       store.dispatch(SetShowSeedPhraseBanner(true));
     }
+  };
+}
+
+
+
+ThunkAction setTestMerchantMode() {
+  return (Store store) async {
+    //TODO 1: Check that the app is in test mode
+
+    //TODO 2: Check that the User account is an admin
+
+    thunkActionCatchError('setTestMerchantMode', () {
+      store.dispatch(SetTestMerchantMode());
+    });
+  };
+}
+
+ThunkAction setConsumerMode() {
+  return (Store store) async {
+    //TODO 1: Check that the app is in test mode
+
+    //TODO 2: Check that the User account is an admin
+
+    thunkActionCatchError('setConsumerMode', () {
+      store.dispatch(SetConsumerMode());
+    });
   };
 }

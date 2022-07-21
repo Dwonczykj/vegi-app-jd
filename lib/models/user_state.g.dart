@@ -68,6 +68,10 @@ _$_UserState _$$_UserStateFromJson(Map<String, dynamic> json) => _$_UserState(
       hasSavedSeedPhrase: json['hasSavedSeedPhrase'] as bool? ?? false,
       initialLoginDateTime: json['initialLoginDateTime'] as String? ?? "",
       showSeedPhraseBanner: json['showSeedPhraseBanner'] as bool? ?? false,
+      adminSettings: json['adminSettings'] == null
+          ? null
+          : AdminSettings.fromJson(
+              json['adminSettings'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
@@ -106,4 +110,5 @@ Map<String, dynamic> _$$_UserStateToJson(_$_UserState instance) =>
       'hasSavedSeedPhrase': instance.hasSavedSeedPhrase,
       'initialLoginDateTime': instance.initialLoginDateTime,
       'showSeedPhraseBanner': instance.showSeedPhraseBanner,
+      'adminSettings': adminSettingsToJson(instance.adminSettings),
     };

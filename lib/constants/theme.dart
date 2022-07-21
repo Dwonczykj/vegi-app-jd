@@ -1,4 +1,5 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 final FlexColorScheme flexColorSchemeLight = FlexColorScheme.light(
@@ -21,6 +22,14 @@ final FlexColorScheme flexColorSchemeLight = FlexColorScheme.light(
 // const Color themeShade700 = Color(0xFFFBC02D);
 // const Color themeShade800 = Color(0xFFF9A825);
 // const Color themeShade900 = Color(0xFFF57F17);
+
+// GRePT Color Scheme
+var color1 = Color(0xFF6AD29B); // 0xaarrggbb -> #rrggbb
+var color2 = Color(0xFF6A9B7F);
+var color3 = Color(0xFFF1FCF5);
+var color4 = Color(0xFFD9EDDF);
+var color5 = Color(0xFFC3F9FF);
+var color6 = Color(0xFF487E91);
 
 //Vegi Color Scheme
 const Color themeShade100 = Color(0xFFF1F8EF);
@@ -72,3 +81,49 @@ const List<Color> themeColors = [
 ];
 
 final List<Color> colorToWhiteGradient = [themeShade400, themeShade300, themeShade300, themeShade200, Colors.white];
+
+ThemeData getColorScheme({required bool useFlex, required bool isDark}) {
+  if (useFlex) {
+    if (!isDark) {
+      return FlexThemeData.light(
+        scheme: FlexScheme.deepPurple,
+        surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+        blendLevel: 20,
+        appBarOpacity: 0.95,
+        subThemesData: const FlexSubThemesData(
+          blendOnLevel: 20,
+          blendOnColors: false,
+        ),
+        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        useMaterial3: true,
+        // To use the playground font, add GoogleFonts package and uncomment
+        // fontFamily: GoogleFonts.notoSans().fontFamily,
+      );
+    } else {
+      return FlexThemeData.dark(
+        scheme: FlexScheme.deepPurple,
+        surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
+        blendLevel: 15,
+        appBarStyle: FlexAppBarStyle.background,
+        appBarOpacity: 0.90,
+        subThemesData: const FlexSubThemesData(
+          blendOnLevel: 30,
+        ),
+        visualDensity: FlexColorScheme.comfortablePlatformDensity,
+        useMaterial3: true,
+        // To use the playground font, add GoogleFonts package and uncomment
+        // fontFamily: GoogleFonts.notoSans().fontFamily,
+      );
+    }
+  } else {
+    if (!isDark) {
+      return ThemeData.from(colorScheme: const ColorScheme.light()).copyWith(
+        typography: Typography.material2018(platform: defaultTargetPlatform),
+      );
+    } else {
+      return ThemeData.from(colorScheme: const ColorScheme.dark()).copyWith(
+        typography: Typography.material2018(platform: defaultTargetPlatform),
+      );
+    }
+  }
+}

@@ -1,6 +1,7 @@
-import 'package:vegan_liverpool/redux/actions/user_actions.dart';
-import 'package:vegan_liverpool/models/user_state.dart';
 import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/models/admin/admin_settings.dart';
+import 'package:vegan_liverpool/models/user_state.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
 
 final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, GetWalletDataSuccess>(_getWalletDataSuccess),
@@ -21,7 +22,8 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, JustInstalled>(_justInstalled),
   TypedReducer<UserState, DeviceIdSuccess>(_deviceIdSuccess),
   TypedReducer<UserState, SetSecurityType>(_setSecurityType),
-  TypedReducer<UserState, ReceiveBackupDialogShowed>(_receiveBackupDialogShowed),
+  TypedReducer<UserState, ReceiveBackupDialogShowed>(
+      _receiveBackupDialogShowed),
   TypedReducer<UserState, DepositBannerShowed>(_depositBannerShowed),
   TypedReducer<UserState, HomeBackupDialogShowed>(_homeBackupDialogShowed),
   TypedReducer<UserState, WarnSendDialogShowed>(_warnSendDialogShowed),
@@ -31,6 +33,8 @@ final userReducers = combineReducers<UserState>([
   TypedReducer<UserState, SetInitialLoginDateTime>(_setInitialLoginDateTime),
   TypedReducer<UserState, SetShowSeedPhraseBanner>(_setShowSeedPhraseBanner),
   TypedReducer<UserState, SetHasSavedSeedPhrase>(_setHasSavedSeedPhrase),
+  TypedReducer<UserState, SetTestMerchantMode>(_setTestMerchantMode),
+  TypedReducer<UserState, SetConsumerMode>(_setConsumerMode),
 ]);
 
 UserState _updateLocale(UserState state, UpdateLocale action) {
@@ -41,7 +45,8 @@ UserState _updateCurrency(UserState state, UpdateCurrency action) {
   return state.copyWith(currency: action.currency);
 }
 
-UserState _receiveBackupDialogShowed(UserState state, ReceiveBackupDialogShowed action) {
+UserState _receiveBackupDialogShowed(
+    UserState state, ReceiveBackupDialogShowed action) {
   return state.copyWith(receiveBackupDialogShowed: true);
 }
 
@@ -49,7 +54,8 @@ UserState _depositBannerShowed(UserState state, DepositBannerShowed action) {
   return state.copyWith(depositBannerShowed: true);
 }
 
-UserState _homeBackupDialogShowed(UserState state, HomeBackupDialogShowed action) {
+UserState _homeBackupDialogShowed(
+    UserState state, HomeBackupDialogShowed action) {
   return state.copyWith(homeBackupDialogShowed: true);
 }
 
@@ -86,19 +92,23 @@ UserState _createNewWalletSuccess(
   UserState state,
   CreateLocalAccountSuccess action,
 ) {
+  final isAdmin = state.checkIfAdmin();
   return UserState(
     isLoggedOut: false,
     mnemonic: action.mnemonic,
     privateKey: action.privateKey,
     accountAddress: action.accountAddress,
+    adminSettings: isAdmin ? AdminSettings() : null,
   );
 }
 
 UserState _loginSuccess(UserState state, LoginRequestSuccess action) {
+  final isAdmin = state.checkIfAdmin();
   return state.copyWith(
     countryCode: action.countryCode.dialCode!,
     isoCode: action.countryCode.code!,
     phoneNumber: action.phoneNumber,
+    adminSettings: isAdmin ? state.adminSettings ?? AdminSettings() : null,
   );
 }
 
@@ -178,14 +188,28 @@ UserState _addDeliveryAddress(UserState state, AddDeliveryAddress action) {
   return state.copyWith(listOfDeliveryAddresses: action.listOfAddresses);
 }
 
-UserState _setInitialLoginDateTime(UserState state, SetInitialLoginDateTime action) {
+UserState _setInitialLoginDateTime(
+    UserState state, SetInitialLoginDateTime action) {
   return state.copyWith(initialLoginDateTime: action.initialLoginDateTime);
 }
 
-UserState _setShowSeedPhraseBanner(UserState state, SetShowSeedPhraseBanner action) {
+UserState _setShowSeedPhraseBanner(
+    UserState state, SetShowSeedPhraseBanner action) {
   return state.copyWith(showSeedPhraseBanner: action.showSeedPhraseBanner);
 }
 
-UserState _setHasSavedSeedPhrase(UserState state, SetHasSavedSeedPhrase action) {
+UserState _setHasSavedSeedPhrase(
+    UserState state, SetHasSavedSeedPhrase action) {
   return state.copyWith(hasSavedSeedPhrase: action.hasSavedSeedPhrase);
+}
+
+UserState _setTestMerchantMode(UserState state, SetTestMerchantMode action) {
+  final adminSettings = state.adminSettings?.copyWith(isTestMerchantMode: true);
+  return state.copyWith(adminSettings: adminSettings);
+}
+
+UserState _setConsumerMode(UserState state, SetConsumerMode action) {
+  final adminSettings =
+      state.adminSettings?.copyWith(isTestMerchantMode: false);
+  return state.copyWith(adminSettings: adminSettings);
 }

@@ -1,17 +1,19 @@
 import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
-import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
+import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/redux/actions/demoData.dart';
+import 'package:vegan_liverpool/services/abstract_apis/iRestaurantsService.dart';
 
 @lazySingleton
-class PeeplEatsService {
+class PeeplEatsService extends IRestaraurantDeliveryService {
   final Dio dio;
 
   PeeplEatsService(this.dio) {
@@ -20,7 +22,8 @@ class PeeplEatsService {
   }
 
   Future<List<RestaurantItem>> featuredRestaurants(String outCode) async {
-    Response response = await dio.get('api/v1/vendors?outcode=$outCode').timeout(
+    Response response =
+        await dio.get('api/v1/vendors?outcode=$outCode').timeout(
       Duration(seconds: 5),
       onTimeout: () {
         return Response(
@@ -70,7 +73,8 @@ class PeeplEatsService {
     return restaurantsActive;
   }
 
-  Future<List<RestaurantMenuItem>> getRestaurantMenuItems(String restaurantID) async {
+  Future<List<RestaurantMenuItem>> getRestaurantMenuItems(
+      String restaurantID) async {
     Response response = await dio.get('api/v1/vendors/$restaurantID?');
 
     List<dynamic> results = response.data['vendor']['products'] as List;
@@ -103,8 +107,35 @@ class PeeplEatsService {
     return menuItems;
   }
 
+  Future<String> signIn(String user, String password) async {
+    return 'abcd-1234-efgh-5678'; //TODO: CHAT TO Peepl about authorising requests!
+  }
+
+  Future<bool> userIsProductOwnerForRestaurant(
+      String restaurantID, String sessionToken) async {
+    final response = await dio.get(
+        'api/v1/vendors/check-product-owner?token=${sessionToken}&restaurantID=$restaurantID');
+
+    return response.data['is_owner'] ?? false;
+  }
+
+  Future<bool> createRestaurantMenuItem(RestaurantMenuItem newItem) async {
+    final assertResponse = await userIsProductOwnerForRestaurant(
+        newItem.restaurantID, 'abcd-1234-efgh-5678');
+
+    if (!assertResponse) {
+      return false;
+    }
+
+    final response =
+        await dio.post('api/v1/vendors/create-item', data: newItem.toJson());
+
+    return response.statusCode == 200;
+  }
+
   Future<List<ProductOptionsCategory>> getProductOptions(String itemID) async {
-    Response response = await dio.get('api/v1/products/get-product-options/$itemID?');
+    Response response =
+        await dio.get('api/v1/products/get-product-options/$itemID?');
 
     List<dynamic> results = response.data as List;
 
@@ -143,23 +174,28 @@ class PeeplEatsService {
   }
 
   Future<int> checkDiscountCode(String discountCode) async {
-    Response response = await dio.get('api/v1/discounts/check-discount-code/$discountCode?');
+    Response response =
+        await dio.get('api/v1/discounts/check-discount-code/$discountCode?');
 
     Map<dynamic, dynamic> results = response.data['discount'] as Map;
 
     return results['percentage'];
   }
 
-  Future<FullfilmentMethods> getFulfilmentSlots({required String vendorID, required String dateRequired}) async {
-    Response response = await dio.get('api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=$dateRequired');
+  Future<FullfilmentMethods> getFulfilmentSlots(
+      {required String vendorID, required String dateRequired}) async {
+    Response response = await dio.get(
+        'api/v1/vendors/get-fulfilment-slots?vendor=$vendorID&date=$dateRequired');
 
     FullfilmentMethods methods = FullfilmentMethods.fromJson(response.data);
 
     return methods;
   }
 
-  Future<Map<dynamic, dynamic>> createOrder(Map<String, dynamic> orderObject) async {
-    Response response = await dio.post('/api/v1/orders/create-order', data: orderObject);
+  Future<Map<dynamic, dynamic>> createOrder(
+      Map<String, dynamic> orderObject) async {
+    Response response =
+        await dio.post('/api/v1/orders/create-order', data: orderObject);
 
     Map<dynamic, dynamic> result = response.data;
 
@@ -167,7 +203,8 @@ class PeeplEatsService {
   }
 
   Future<Map<dynamic, dynamic>> checkOrderStatus(String orderID) async {
-    Response response = await dio.get('/api/v1/orders/get-order-status?orderId=$orderID');
+    Response response =
+        await dio.get('/api/v1/orders/get-order-status?orderId=$orderID');
 
     Map<dynamic, dynamic> result = response.data;
 
@@ -180,7 +217,8 @@ class PeeplEatsService {
   }
 
   Future<List<String>> getPostalCodes() async {
-    Response response = await dio.get('api/v1/postal-districts/get-all-postal-districts');
+    Response response =
+        await dio.get('api/v1/postal-districts/get-all-postal-districts');
 
     List<String> outCodes = [];
 

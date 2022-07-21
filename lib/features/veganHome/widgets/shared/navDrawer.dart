@@ -34,7 +34,8 @@ class _NavDrawerState extends State<NavDrawer> {
                         width: 50,
                         height: 50,
                         imageUrl: viewModel.avatarUrl,
-                        placeholder: (context, url) => CircularProgressIndicator(),
+                        placeholder: (context, url) =>
+                            CircularProgressIndicator(),
                         errorWidget: (context, url, error) => CircleAvatar(
                           backgroundImage: AssetImage('assets/images/anom.png'),
                           radius: 30,
@@ -137,12 +138,21 @@ class _NavDrawerState extends State<NavDrawer> {
                 title: Text('Account'),
                 onTap: () => context.router.push(ProfileScreen()),
               ),
-              ListTile(leading: Icon(Icons.quiz), title: Text('FAQs'), onTap: () => context.router.push(FAQScreen())),
+              ListTile(
+                  leading: Icon(Icons.quiz),
+                  title: Text('FAQs'),
+                  onTap: () => context.router.push(FAQScreen())),
               ListTile(
                 leading: Icon(Icons.help_sharp),
                 title: Text('About Us'),
                 onTap: () => context.router.push(AboutScreen()),
               ),
+              if (viewModel.isAdmin)
+                ListTile(
+                  leading: Icon(Icons.admin_panel_settings_sharp),
+                  title: Text('Admin'),
+                  onTap: () => context.router.push(AdminScreen()),
+                ),
               ListTile(
                 leading: Icon(Icons.exit_to_app),
                 title: Text('Logout'),
@@ -162,7 +172,8 @@ class _NavDrawerState extends State<NavDrawer> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       IconButton(
-                        onPressed: () => launchUrl("https://www.instagram.com/vegi_liverpool/"),
+                        onPressed: () => launchUrl(
+                            "https://www.instagram.com/vegi_liverpool/"),
                         icon: Icon(
                           FontAwesomeIcons.instagram,
                           color: Colors.grey[400],
@@ -170,7 +181,8 @@ class _NavDrawerState extends State<NavDrawer> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () => launchUrl("https://vm.tiktok.com/ZMNF3ekHX/"),
+                        onPressed: () =>
+                            launchUrl("https://vm.tiktok.com/ZMNF3ekHX/"),
                         icon: Icon(
                           FontAwesomeIcons.tiktok,
                           color: Colors.grey[400],

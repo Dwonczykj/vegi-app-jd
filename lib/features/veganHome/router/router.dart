@@ -1,19 +1,20 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:vegan_liverpool/common/router/route_guards.dart';
+import 'package:vegan_liverpool/features/account/screens/profile.dart';
 import 'package:vegan_liverpool/features/onboard/screens/show_user_mnemonic.dart';
 import 'package:vegan_liverpool/features/onboard/screens/verify_user_mnemonic.dart';
+import 'package:vegan_liverpool/features/topup/screens/topup.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/aboutScreen.dart';
-import 'package:vegan_liverpool/features/veganHome/screens/checkoutScreen.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/adminScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/allOrdersPage.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/checkoutScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/faqScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/orderConfirmed.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/preparingOrderScreen.dart';
+import 'package:vegan_liverpool/features/veganHome/screens/restaurantMenuScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/scheduledOrdersPage.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/toteScreen.dart';
-import 'package:vegan_liverpool/features/veganHome/screens/restaurantMenuScreen.dart';
 import 'package:vegan_liverpool/features/veganHome/screens/veganHome.dart';
-import 'package:vegan_liverpool/features/account/screens/profile.dart';
-import 'package:vegan_liverpool/features/topup/screens/topup.dart';
 
 const veganHomeTab = AutoRoute(
   path: 'veganHomeAlt',
@@ -77,6 +78,11 @@ const veganHomeTab = AutoRoute(
     AutoRoute(
       page: AboutScreen,
       name: 'aboutScreen',
+      guards: [AuthGuard],
+    ),
+    AutoRoute(
+      page: AdminScreen,
+      name: 'adminScreen',
       guards: [AuthGuard],
     ),
     CustomRoute(

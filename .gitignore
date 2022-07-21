@@ -8,7 +8,10 @@
 .buildlog/
 .history
 .svn/
+.fvm
+.vscode
 
+/environment/.env
 # IntelliJ related
 *.iml
 *.ipr

@@ -41,10 +41,6 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    lintOptions {
-        disable 'InvalidPackage'
-        checkReleaseBuilds false
-    }
 
     defaultConfig {
         applicationId "com.vegi.vegiapp"
@@ -69,6 +65,10 @@ android {
            signingConfig signingConfigs.release
        }
    }
+    lint {
+        checkReleaseBuilds false
+        disable 'InvalidPackage'
+    }
 }
 
 flutter {
