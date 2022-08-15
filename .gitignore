@@ -11,6 +11,8 @@
 .fvm
 .vscode
 
+/swagger/
+/workspaces/
 /environment/.env
 # IntelliJ related
 *.iml
