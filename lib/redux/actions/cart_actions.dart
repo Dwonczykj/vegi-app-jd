@@ -11,6 +11,8 @@ import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/deliveryAddresses.dart';
+import 'package:vegan_liverpool/models/restaurant/eligibleDeliveryCollectionDates.dart';
+import 'package:vegan_liverpool/models/restaurant/eligibleOrderDates.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
 import 'package:vegan_liverpool/models/tokens/token.dart';
 import 'package:vegan_liverpool/services.dart';
@@ -46,6 +48,14 @@ class UpdateSlots {
   final List<Map<String, String>> collectionSlots;
 
   UpdateSlots(this.deliverySlots, this.collectionSlots);
+}
+
+class UpdateEligibleOrderDates {
+  final EligibleOrderDates eligibleCollectionDates;
+  final EligibleOrderDates eligibleDeliveryDates;
+
+  UpdateEligibleOrderDates(
+      this.eligibleCollectionDates, this.eligibleDeliveryDates);
 }
 
 class UpdateSelectedDeliveryAddress {
@@ -155,9 +165,13 @@ ThunkAction getFullfillmentMethods({DateTime? newDate}) {
       } else {
         fullfilmentMethods = await peeplEatsService.getFulfilmentSlots(
             vendorID: store.state.cartState.restaurantID, dateRequired: formatter.format(newDate!));
-      }
+      } 
       store.dispatch(UpdateSlots(fullfilmentMethods.deliverySlots, fullfilmentMethods.collectionSlots));
-
+      
+      store.dispatch(UpdateEligibleOrderDates(
+          fullfilmentMethods.eligibleCollectionDates,
+          fullfilmentMethods.eligibleDeliveryDates));
+      
       store.dispatch(SetFulfilmentFees(
         fullfilmentMethods.deliveryMethod == null ? 0 : fullfilmentMethods.deliveryMethod!['priceModifier'] ?? 0,
         fullfilmentMethods.collectionMethod == null ? 0 : fullfilmentMethods.collectionMethod!['priceModifier'] ?? 0,
@@ -175,6 +189,27 @@ ThunkAction getFullfillmentMethods({DateTime? newDate}) {
     }
   };
 }
+
+ThunkAction getEligibleOrderDatesOnly() {
+  return (Store store) async {
+    try {
+      EligibleDeliveryCollectionDates eligibleDates = await peeplEatsService
+          .getEligibleOrderDates(vendorID: store.state.cartState.restaurantID);
+
+      store.dispatch(UpdateEligibleOrderDates(
+          eligibleDates.eligibleCollectionDates,
+          eligibleDates.eligibleDeliveryDates));
+    } catch (e, s) {
+      log.error('ERROR - getEligibleOrderDatesOnly $e');
+      await Sentry.captureException(
+        e,
+        stackTrace: s,
+        hint: 'ERROR - getEligibleOrderDatesOnly $e',
+      );
+    }
+  };
+}
+
 
 ThunkAction updateCartTip(int newTip) {
   return (Store store) async {

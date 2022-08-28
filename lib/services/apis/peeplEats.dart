@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/models/restaurant/eligibleDeliveryCollectionDates.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
@@ -227,5 +228,17 @@ class PeeplEatsService extends IRestaraurantDeliveryService {
     });
 
     return outCodes;
+  }
+
+  @override
+  Future<EligibleDeliveryCollectionDates> getEligibleOrderDates(
+      {required String vendorID}) async {
+    Response response = await dio
+        .get('api/v1/vendors/get-eligible-order-dates?vendor=$vendorID');
+
+    EligibleDeliveryCollectionDates orderDates =
+        EligibleDeliveryCollectionDates.fromJson(response.data);
+
+    return orderDates;
   }
 }

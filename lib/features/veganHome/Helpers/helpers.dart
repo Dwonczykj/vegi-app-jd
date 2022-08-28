@@ -161,3 +161,6 @@ extension CapitalizeString on String {
     return this[0].toUpperCase() + this.substring(1);
   }
 }
+
+String sanitizeDateTime(DateTime dateTime) =>
+    "${dateTime.year}-${dateTime.month}-${dateTime.day}";

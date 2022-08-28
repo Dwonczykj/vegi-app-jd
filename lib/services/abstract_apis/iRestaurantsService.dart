@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:vegan_liverpool/models/restaurant/eligibleDeliveryCollectionDates.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
@@ -82,6 +83,9 @@ abstract class IRestaraurantDeliveryService {
   // Orders
   Future<FullfilmentMethods> getFulfilmentSlots(
       {required String vendorID, required String dateRequired});
+  
+  Future<EligibleDeliveryCollectionDates> getEligibleOrderDates(
+      {required String vendorID});
 
   Future<Map<dynamic, dynamic>> createOrder(Map<String, dynamic> orderObject);
 
