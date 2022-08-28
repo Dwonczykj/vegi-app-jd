@@ -1,13 +1,13 @@
+import 'dart:math';
+
 import 'package:auto_route/src/router/auto_router_x.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:vegan_liverpool/common/router/routes.gr.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/cart/SingleCartItem.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/cart/detailCartItemView.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/customAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/emptyStatePage.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/shimmerButton.dart';
@@ -29,7 +29,9 @@ class _ToteScreenState extends State<ToteScreen> {
       converter: UserCartViewModel.fromStore,
       distinct: true,
       onInit: (store) {
-        store.state.cartState.restaurantID != "" ? store.dispatch(getFullfillmentMethods()) : null;
+        store.state.cartState.restaurantID != ""
+            ? store.dispatch(getFullfillmentMethods())
+            : null;
       },
       builder: (_, viewmodel) {
         return Scaffold(
@@ -49,39 +51,52 @@ class _ToteScreenState extends State<ToteScreen> {
                             .map<Widget>(
                               (element) => Dismissible(
                                 key: UniqueKey(),
-
-                                // only allows the user swipe from right to left
-                                direction: DismissDirection.endToStart,
-
-                                // Remove this product from the list
-                                // In production enviroment, you may want to send some request to delete it on server side
-                                onDismissed: (_) {
-                                  final updatedElement =
-                                      element.copyWith(itemQuantity: 0);
-                                  viewmodel.updateCartItem(updatedElement);
+                                direction: DismissDirection.horizontal,
+                                confirmDismiss: (direction) async {
+                                  if (direction ==
+                                      DismissDirection.endToStart) {
+                                    final updatedElement =
+                                        element.copyWith(itemQuantity: 0);
+                                    viewmodel.updateCartItem(updatedElement);
+                                    return true;
+                                  } else {
+                                    final updatedElement = element.copyWith(
+                                        internalID: Random(DateTime.now()
+                                                .millisecondsSinceEpoch)
+                                            .nextInt(10000));
+                                    viewmodel.addCartItem(updatedElement);
+                                    return false;
+                                  }
                                 },
-
-                                child: GestureDetector(
-                                  child: SingleCartItem(orderItem: element),
-                                  onTap: () => {
-                                    showBarModalBottomSheet(
-                                      context: context,
-                                      builder: (context) =>
-                                          DetailCartItemView(item: element),
-                                    ),
-                                  },
-                                ),
-
-                                // This will show up when the user performs dismissal action
-                                // It is a red background and a trash icon
+                                child: SingleCartItem(orderItem: element),
                                 background: Container(
-                                  color: Colors.red,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.green.shade400),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 15),
+                                  alignment: Alignment.centerLeft,
+                                  child: const Padding(
+                                    padding: const EdgeInsets.only(left: 20),
+                                    child: const Icon(
+                                      Icons.add,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                secondaryBackground: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.red.shade400),
                                   margin: const EdgeInsets.symmetric(
                                       horizontal: 15),
                                   alignment: Alignment.centerRight,
-                                  child: const Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
+                                  child: const Padding(
+                                    padding: const EdgeInsets.only(right: 20),
+                                    child: const Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -110,7 +125,7 @@ class _ToteScreenState extends State<ToteScreen> {
                               : SizedBox.shrink(),
                           totalsPriceItemTile(
                             "Service Charge",
-                            cFPrice(viewmodel.cartDeliveryCharge),
+                            cFPrice(viewmodel.cartServiceCharge),
                           ),
                           Divider(
                             height: 20,
@@ -124,16 +139,20 @@ class _ToteScreenState extends State<ToteScreen> {
                             cFPrice(viewmodel.cartTotal),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 20),
                             child: ShimmerButton(
                               baseColor: themeShade400,
                               highlightColor: themeShade300,
                               buttonAction: () {
-                                if (viewmodel.minimumOrderAmount > viewmodel.cartTotal) {
+                                if (viewmodel.minimumOrderAmount >
+                                    viewmodel.cartTotal) {
                                   showErrorSnack(
                                       context: context,
-                                      title: "This restaurant has a minimum order!",
-                                      message: "Try adding more items to your tote!");
+                                      title:
+                                          "This restaurant has a minimum order!",
+                                      message:
+                                          "Try adding more items to your tote!");
                                   return;
                                 }
                                 context.router.push(CheckoutScreen());
@@ -169,7 +188,8 @@ class _ToteScreenState extends State<ToteScreen> {
               : EmptyStatePage(
                   emoji: "😐",
                   title: "No items in your bag… yet!",
-                  subtitle: "Try adding an item from one of our amazing restauarants to fill this page up!",
+                  subtitle:
+                      "Try adding an item from one of our amazing restauarants to fill this page up!",
                 ),
         );
       },
