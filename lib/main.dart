@@ -40,7 +40,7 @@ void main() async {
 
   //choose a dev environment and load that file from .env folder
   // final envFile = env == 'prod' ? '.env' : '.env_qa';
-  await dotenv.load(fileName: 'environment/.env_qa');
+  await dotenv.load(fileName: 'environment/.env_dev');
 
 // initialize stripe for payment
   new StripeService()..init();

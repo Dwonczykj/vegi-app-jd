@@ -1,4 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:vegan_liverpool/models/admin/user.dart';
 import 'package:vegan_liverpool/models/restaurant/eligibleDeliveryCollectionDates.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
@@ -40,35 +41,37 @@ abstract class IRestaraurantManagementService {
   Future<List<Map<String, dynamic>>> getPastOrders(String walletAddress);
 
   Future<List<String>> getPostalCodes();
-
+  
   // User Details
-  Future<String> signIn(String user, String password);
+  Future<User?> signUp(
+      {required String countryCode,
+      required String phoneNoCountry,
+      String? name,
+      String? email});
 
-  Future<String> signOut(String user, String password);
+  Future<User?> signIn(
+      {String phoneNumber, required String firebaseSessionToken});
 
-  // Merchant Product Management
-  Future<bool> createRestaurantMenuItem(RestaurantMenuItem newItem);
+  Future<bool> signOut();
 
-  Future<bool> updateRestaurantMenuItem(RestaurantMenuItem newItem);
-
-  Future<bool> registerRestaurantMenuItemToBarcode(
-      RestaurantMenuItem newItem, String? barcodeData);
-
-  Future<bool> discontinueRestaurantMenuItem(RestaurantMenuItem newItem);
-
-  // Merchant Admin
-  Future<bool> registerUserToBusiness(User user, RestaurantItem business);
-
-  Future<bool> deregisterUserFromBusiness(User user, RestaurantItem business);
-
-  Future<bool> checkUserRegisteredToBusiness(
-      User user, RestaurantItem business);
-
-  Future<bool> userIsProductOwnerForRestaurant(
-      String restaurantID, String sessionToken);
+  Future<bool> deregister({required String phoneNumber});
 }
 
 abstract class IRestaraurantDeliveryService {
+  // User Details
+  Future<User?> signUp(
+      {required String countryCode,
+      required String phoneNoCountry,
+      String? name,
+      String? email});
+
+  Future<User?> signIn(
+      {required String phoneNumber, required String firebaseSessionToken});
+
+  Future<bool> signOut();
+
+  Future<bool> deregister({required User user});
+
   // Restaurants
   // outCode refers to postcode that restaurants deliver to: i.e. 'L1'
   Future<List<RestaurantItem>> featuredRestaurants(String outCode);
@@ -83,7 +86,7 @@ abstract class IRestaraurantDeliveryService {
   // Orders
   Future<FullfilmentMethods> getFulfilmentSlots(
       {required String vendorID, required String dateRequired});
-  
+
   Future<EligibleDeliveryCollectionDates> getEligibleOrderDates(
       {required String vendorID});
 

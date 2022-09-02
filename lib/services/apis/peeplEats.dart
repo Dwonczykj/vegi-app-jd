@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
+import 'package:vegan_liverpool/models/admin/user.dart';
 import 'package:vegan_liverpool/models/restaurant/eligibleDeliveryCollectionDates.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
@@ -108,8 +109,54 @@ class PeeplEatsService extends IRestaraurantDeliveryService {
     return menuItems;
   }
 
-  Future<String> signIn(String user, String password) async {
-    return 'abcd-1234-efgh-5678'; //TODO: CHAT TO Peepl about authorising requests!
+  Future<User?> signUp(
+      {required String countryCode,
+      required String phoneNoCountry,
+      String? name,
+      String? email}) async {
+    final response = await dio.post('api/v1/admin/', data: <String, String?>{
+      'emailAddress': email,
+      'phoneNoCountry': phoneNoCountry,
+      'phoneCountryCode': countryCode,
+      'name': name,
+    });
+
+    if (response.statusCode != null && response.statusCode! < 400) {
+      return User.fromJson(response.data);
+    } else {
+      return null;
+    }
+  }
+
+  Future<User?> signIn(
+      {required String phoneNumber,
+      required String firebaseSessionToken}) async {
+    final response = await dio.post('api/v1/admin/login-with-firebase',
+        data: <String, String>{
+          'phoneNumber': phoneNumber,
+          'firebaseSessionToken': firebaseSessionToken
+        });
+
+    if (response.statusCode != null && response.statusCode! < 400) {
+      return User.fromJson(response.data);
+    } else {
+      return null;
+    }
+  }
+
+  Future<bool> signOut() async {
+    final response = await dio.get('api/v1/admin/logout');
+
+    return response.statusCode != null && response.statusCode! < 400;
+  }
+
+  Future<bool> deregister({required User user}) async {
+    final response =
+        await dio.post('api/v1/admin/deregister-user', data: <String, String>{
+      'id': user.id,
+    });
+
+    return response.statusCode != null && response.statusCode! < 400;
   }
 
   Future<bool> userIsProductOwnerForRestaurant(
