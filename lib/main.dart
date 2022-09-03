@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:redux/redux.dart';
-import 'package:redux_epics/redux_epics.dart';
 import 'package:redux_logging/redux_logging.dart';
 import 'package:redux_persist/redux_persist.dart';
 import 'package:redux_thunk/redux_thunk.dart';
@@ -14,7 +13,6 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:vegan_liverpool/app.dart';
 import 'package:vegan_liverpool/common/di/di.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:vegan_liverpool/redux/middleware/firebase_middleware.dart';
 import 'package:vegan_liverpool/redux/reducers/app_reducer.dart';
 import 'package:vegan_liverpool/utils/log/log.dart';
 import 'package:vegan_liverpool/utils/storage.dart';
@@ -61,7 +59,6 @@ void main() async {
   final List<Middleware<AppState>> wms = [
     thunkMiddleware,
     persistor.createMiddleware(),
-    EpicMiddleware(allEpics),
   ];
 
 // If the app is built in Debug mode, you want to add a logger which prints

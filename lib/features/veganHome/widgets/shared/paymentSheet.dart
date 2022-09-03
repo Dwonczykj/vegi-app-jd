@@ -1,5 +1,4 @@
 import 'package:auto_route/src/router/auto_router_x.dart';
-import 'package:vegan_liverpool/utils/stripeHandler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/common/router/routes.dart';
@@ -13,6 +12,7 @@ import 'package:vegan_liverpool/redux/actions/cart_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/paymentSheet.dart';
 import 'package:vegan_liverpool/utils/biometric_local_auth.dart';
 import 'package:vegan_liverpool/utils/constants.dart';
+import 'package:vegan_liverpool/utils/stripeHandler.dart';
 
 class PaymentSheet extends StatefulWidget {
   const PaymentSheet({Key? key}) : super(key: key);
@@ -191,9 +191,15 @@ class _PaymentSheetState extends State<PaymentSheet> {
                                               () {
                                                 context.router.push(OrderConfirmedScreen());
                                               },
-                                              () {
-                                                print("error took place");
-                                                showErrorSnack(context: context, title: "Something went wrong");
+                                              (errorMessage) {
+                                                print(
+                                                    "errored sending ${I10n.of(context).token}s");
+                                                showErrorSnack(
+                                                    context: context,
+                                                    title: I10n.of(context)
+                                                        .something_went_wrong,
+                                                    message:
+                                                        "errored sending ${I10n.of(context).token}s. ${errorMessage}");
                                               },
                                             )
                                       : context.router.pop();
@@ -216,9 +222,15 @@ class _PaymentSheetState extends State<PaymentSheet> {
                                       () {
                                         context.router.push(OrderConfirmedScreen());
                                       },
-                                      () {
-                                        print("error took place");
-                                        showErrorSnack(context: context, title: "Something went wrong");
+                                      (errorMessage) {
+                                        print(
+                                            "errored sending ${I10n.of(context).token}s");
+                                        showErrorSnack(
+                                            context: context,
+                                            title: I10n.of(context)
+                                                .something_went_wrong,
+                                            message:
+                                                "errored sending ${I10n.of(context).token}s. ${errorMessage}");
                                       },
                                     );
                             }
