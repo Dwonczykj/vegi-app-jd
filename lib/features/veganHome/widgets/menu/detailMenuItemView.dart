@@ -20,7 +20,8 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
     return StoreConnector<AppState, DetailMenuItem>(
       converter: DetailMenuItem.fromStore,
       onInit: (store) {
-        store.dispatch(fetchProductOptions(store.state.menuItemState.menuItem!.menuItemID));
+        store.dispatch(fetchProductOptions(
+            store.state.menuItemState.menuItem!.menuItemID));
       },
       builder: (_, viewmodel) {
         return Stack(
@@ -50,7 +51,8 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                                 blurRadius: 10,
                               )
                             ],
-                            borderRadius: BorderRadius.vertical(top: Radius.circular(100)),
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(100)),
                             color: Colors.white,
                           ),
                           width: MediaQuery.of(context).size.width,
@@ -66,14 +68,16 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                       children: [
                         Text(
                           viewmodel.menuItem!.name,
-                          style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.w900),
+                          style: TextStyle(
+                              fontSize: 22.0, fontWeight: FontWeight.w900),
                         ),
                         SizedBox(
                           height: 10,
                         ),
                         Text(
                           cFPrice(viewmodel.totalPrice),
-                          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w900),
+                          style: TextStyle(
+                              fontSize: 18.0, fontWeight: FontWeight.w900),
                         ),
                         SizedBox(
                           height: 10,
