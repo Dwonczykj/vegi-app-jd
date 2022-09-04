@@ -1,6 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -2905,6 +2906,25 @@ class I10n {
     return Intl.message(
       'Token',
       name: 'token',
+      desc: '',
+      args: [],
+    );
+  }
+  /// `Delivery`
+  String get delivery {
+    return Intl.message(
+      'Delivery',
+      name: 'delivery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Collection`
+  String get collection {
+    return Intl.message(
+      'Collection',
+      name: 'collection',
       desc: '',
       args: [],
     );
