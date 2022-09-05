@@ -1,17 +1,17 @@
+import 'package:carrier_info/carrier_info.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:country_code_picker/country_codes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:phone_number/phone_number.dart';
-import 'package:vegan_liverpool/generated/l10n.dart';
-import 'package:vegan_liverpool/models/app_state.dart';
-import 'package:country_code_picker/country_code_picker.dart';
-import 'package:vegan_liverpool/redux/actions/user_actions.dart';
-import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/features/onboard/dialogs/signup.dart';
 import 'package:vegan_liverpool/features/shared/widgets/my_scaffold.dart';
 import 'package:vegan_liverpool/features/shared/widgets/primary_button.dart';
-import 'package:vegan_liverpool/features/onboard/dialogs/signup.dart';
 import 'package:vegan_liverpool/features/shared/widgets/snackbars.dart';
-import 'package:carrier_info/carrier_info.dart';
+import 'package:vegan_liverpool/generated/l10n.dart';
+import 'package:vegan_liverpool/models/app_state.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/services.dart';
 import 'package:vegan_liverpool/utils/url.dart';
 
 typedef SignUp = void Function(
@@ -168,6 +168,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                                 showFlag: true,
                                 initialSelection: countryCode.code,
+                                favorite: <String>[
+                                  'UK',
+                                  'US',
+                                ],
                                 showCountryOnly: false,
                                 dialogTextStyle: TextStyle(
                                   fontSize: 18,
@@ -179,8 +183,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                                 alignLeft: false,
                                 padding: EdgeInsets.zero,
+                                showDropDownButton: true,
                               ),
-                              Icon(Icons.arrow_drop_down),
+                              // Icon(Icons.arrow_drop_down),
                               Container(
                                 height: 35,
                                 width: 1,
