@@ -169,8 +169,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 showFlag: true,
                                 initialSelection: countryCode.code,
                                 favorite: <String>[
-                                  'UK',
-                                  'US',
+                                  'GB', // /Users/joeyd/.pub-cache/hosted/pub.dartlang.org/country_code_picker-2.0.2/lib/country_codes.dart:1174
+                                  'US', // /Users/joeyd/.pub-cache/hosted/pub.dartlang.org/country_code_picker-2.0.2/lib/country_codes.dart:1179
                                 ],
                                 showCountryOnly: false,
                                 dialogTextStyle: TextStyle(

@@ -16,53 +16,55 @@ class Tabs extends StatelessWidget {
       length: 2,
       child: Builder(
         builder: (_) {
-          return Scaffold(
-            appBar: AppBar(
-              toolbarHeight: 0,
-              backgroundColor: Theme.of(context).canvasColor,
-              bottom: PreferredSize(
-                preferredSize: Size(
-                  MediaQuery.of(context).size.width * .8,
-                  70,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 30, right: 30),
-                  child: TabBar(
-                    indicatorColor: Theme.of(context).canvasColor,
-                    unselectedLabelStyle: TextStyle(
-                      fontFamily: 'Europa',
-                      fontSize: 17,
-                    ),
-                    labelColor: Colors.black,
-                    unselectedLabelColor: Color(0xFFA2A2A2),
-                    labelStyle: TextStyle(
-                      fontFamily: 'Europa',
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: Color(0xFFF4F4F4),
-                    ),
-                    tabs: [
-                      Tab(
-                        text: I10n.of(context).wallet,
+          return SafeArea(
+            child: Scaffold(
+              appBar: AppBar(
+                toolbarHeight: 0,
+                backgroundColor: Theme.of(context).canvasColor,
+                bottom: PreferredSize(
+                  preferredSize: Size(
+                    MediaQuery.of(context).size.width * .8,
+                    70,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 30, right: 30),
+                    child: TabBar(
+                      indicatorColor: Theme.of(context).canvasColor,
+                      unselectedLabelStyle: TextStyle(
+                        fontFamily: 'Europa',
+                        fontSize: 17,
                       ),
-                      Tab(
-                        text: I10n.of(context).feed,
+                      labelColor: Colors.black,
+                      unselectedLabelColor: Color(0xFFA2A2A2),
+                      labelStyle: TextStyle(
+                        fontFamily: 'Europa',
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
+                      indicator: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: Color(0xFFF4F4F4),
+                      ),
+                      tabs: [
+                        Tab(
+                          text: I10n.of(context).wallet,
+                        ),
+                        Tab(
+                          text: I10n.of(context).feed,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            body: Padding(
-              padding: EdgeInsets.only(top: 10),
-              child: TabBarView(
-                children: [
-                  Wallet(),
-                  Feed(),
-                ],
+              body: Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: TabBarView(
+                  children: [
+                    Wallet(),
+                    Feed(),
+                  ],
+                ),
               ),
             ),
           );

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
-import 'package:vegan_liverpool/features/shared/widgets/transparent_button.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/customAppBar.dart';
 import 'package:vegan_liverpool/features/veganHome/widgets/shared/emptyStatePage.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/cartItem.dart';
 import 'package:vegan_liverpool/models/restaurant/orderDetails.dart';
-import 'package:vegan_liverpool/models/restaurant/productOptions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/pastOrders.dart';
 
 class ScheduledOrdersPage extends StatelessWidget {
@@ -19,24 +17,27 @@ class ScheduledOrdersPage extends StatelessWidget {
     return StoreConnector<AppState, PastOrdersViewmodel>(
       converter: PastOrdersViewmodel.fromStore,
       builder: (_, viewmodel) {
-        return Scaffold(
-          appBar: CustomAppBar(
-            pageTitle: "Scheduled Orders",
+        return SafeArea(
+          child: Scaffold(
+            appBar: CustomAppBar(
+              pageTitle: "Scheduled Orders",
+            ),
+            body: viewmodel.listOfScheduledOrders.length == 0
+                ? EmptyStatePage(
+                    emoji: "😐",
+                    title: "Pretty empty here, isn't it?",
+                    subtitle:
+                        "Try scheduling an order from one of our amazing restauarants to fill this page up!",
+                  )
+                : ListView.separated(
+                    padding: const EdgeInsets.symmetric(vertical: 30),
+                    itemBuilder: (_, index) => SingleScheduledOrderCard(
+                        orderDetails: viewmodel.listOfScheduledOrders[index]),
+                    separatorBuilder: (_, index) => Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                        ),
+                    itemCount: viewmodel.listOfScheduledOrders.length),
           ),
-          body: viewmodel.listOfScheduledOrders.length == 0
-              ? EmptyStatePage(
-                  emoji: "😐",
-                  title: "Pretty empty here, isn't it?",
-                  subtitle: "Try scheduling an order from one of our amazing restauarants to fill this page up!",
-                )
-              : ListView.separated(
-                  padding: const EdgeInsets.symmetric(vertical: 30),
-                  itemBuilder: (_, index) =>
-                      SingleScheduledOrderCard(orderDetails: viewmodel.listOfScheduledOrders[index]),
-                  separatorBuilder: (_, index) => Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                      ),
-                  itemCount: viewmodel.listOfScheduledOrders.length),
         );
       },
     );

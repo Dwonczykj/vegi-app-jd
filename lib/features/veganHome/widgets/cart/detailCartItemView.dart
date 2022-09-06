@@ -25,126 +25,129 @@ class _DetailCartItemViewState extends State<DetailCartItemView> {
 
       // },
       builder: (_, viewmodel) {
-        return Stack(
-          children: [
-            Scaffold(
-              body: ListView(
-                physics: ClampingScrollPhysics(),
-                children: [
-                  Stack(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        height: 350.0,
-                        child: CachedNetworkImage(
-                          imageUrl: widget.item.menuItem.imageURL,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Positioned(
-                        bottom: -1,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey[800]!,
-                                offset: Offset(0, -5),
-                                blurRadius: 10,
-                              )
-                            ],
-                            borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(100)),
-                            color: Colors.white,
-                          ),
-                          width: MediaQuery.of(context).size.width,
-                          height: 30,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+        return SafeArea(
+          child: Stack(
+            children: [
+              Scaffold(
+                body: ListView(
+                  physics: ClampingScrollPhysics(),
+                  children: [
+                    Stack(
                       children: [
-                        Text(
-                          widget.item.menuItem.name,
-                          style: TextStyle(
-                              fontSize: 22.0, fontWeight: FontWeight.w900),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          cFPrice(widget.item.totalItemPrice),
-                          style: TextStyle(
-                              fontSize: 18.0, fontWeight: FontWeight.w900),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          parseHtmlString(widget.item.menuItem.description),
-                          style: TextStyle(fontSize: 18.0),
-                        ),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        ListView.separated(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: widget.item.selectedProductOptions.length,
-                          itemBuilder: (_, index) => ListTile(
-                            // onTap: () => setState(() {
-                            //   _selectedIndex = index;
-                            //   viewmodel.selectedOptions[widget.productOptionsCategory.categoryID] =
-                            //       widget.productOptionsCategory.listOfOptions[index];
-
-                            //   viewmodel.reCalcTotals();
-                            // }),
-                            // selected: _selectedIndex == index,
-                            // selectedTileColor: themeShade100,
-                            dense: true,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            // leading: Checkbox(
-                            //   activeColor: Colors.grey[800],
-                            //   value: _selectedIndex == index,
-                            //   onChanged: (value) {
-                            //     setState(() {
-                            //       _selectedIndex = index;
-                            //       viewmodel.selectedOptions[widget.productOptionsCategory.categoryID] =
-                            //           widget.productOptionsCategory.listOfOptions[index];
-
-                            //       viewmodel.reCalcTotals();
-                            //     });
-                            //   },
-                            // ),
-                            title: Text(
-                              widget.item.selectedProductOptions[index]!.name,
-                              style: TextStyle(color: Colors.grey[800]),
-                            ),
-                            trailing: Text(
-                              cFPrice(widget
-                                  .item.selectedProductOptions[index]!.price),
-                              style: TextStyle(color: Colors.grey[800]),
-                            ),
+                        Container(
+                          width: double.infinity,
+                          height: 350.0,
+                          child: CachedNetworkImage(
+                            imageUrl: widget.item.menuItem.imageURL,
+                            fit: BoxFit.cover,
                           ),
-                          separatorBuilder: (context, index) =>
-                              Padding(padding: EdgeInsets.only(bottom: 5)),
                         ),
-                        // ProductOptionsView(),
-                        SizedBox(
-                          height: 100,
+                        Positioned(
+                          bottom: -1,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey[800]!,
+                                  offset: Offset(0, -5),
+                                  blurRadius: 10,
+                                )
+                              ],
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(100)),
+                              color: Colors.white,
+                            ),
+                            width: MediaQuery.of(context).size.width,
+                            height: 30,
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.item.menuItem.name,
+                            style: TextStyle(
+                                fontSize: 22.0, fontWeight: FontWeight.w900),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            cFPrice(widget.item.totalItemPrice),
+                            style: TextStyle(
+                                fontSize: 18.0, fontWeight: FontWeight.w900),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            parseHtmlString(widget.item.menuItem.description),
+                            style: TextStyle(fontSize: 18.0),
+                          ),
+                          SizedBox(
+                            height: 25,
+                          ),
+                          ListView.separated(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount:
+                                widget.item.selectedProductOptions.length,
+                            itemBuilder: (_, index) => ListTile(
+                              // onTap: () => setState(() {
+                              //   _selectedIndex = index;
+                              //   viewmodel.selectedOptions[widget.productOptionsCategory.categoryID] =
+                              //       widget.productOptionsCategory.listOfOptions[index];
+
+                              //   viewmodel.reCalcTotals();
+                              // }),
+                              // selected: _selectedIndex == index,
+                              // selectedTileColor: themeShade100,
+                              dense: true,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              // leading: Checkbox(
+                              //   activeColor: Colors.grey[800],
+                              //   value: _selectedIndex == index,
+                              //   onChanged: (value) {
+                              //     setState(() {
+                              //       _selectedIndex = index;
+                              //       viewmodel.selectedOptions[widget.productOptionsCategory.categoryID] =
+                              //           widget.productOptionsCategory.listOfOptions[index];
+
+                              //       viewmodel.reCalcTotals();
+                              //     });
+                              //   },
+                              // ),
+                              title: Text(
+                                widget.item.selectedProductOptions[index]!.name,
+                                style: TextStyle(color: Colors.grey[800]),
+                              ),
+                              trailing: Text(
+                                cFPrice(widget
+                                    .item.selectedProductOptions[index]!.price),
+                                style: TextStyle(color: Colors.grey[800]),
+                              ),
+                            ),
+                            separatorBuilder: (context, index) =>
+                                Padding(padding: EdgeInsets.only(bottom: 5)),
+                          ),
+                          // ProductOptionsView(),
+                          SizedBox(
+                            height: 100,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            DetailMenuViewFloatingBar(),
-          ],
+              DetailMenuViewFloatingBar(),
+            ],
+          ),
         );
       },
     );

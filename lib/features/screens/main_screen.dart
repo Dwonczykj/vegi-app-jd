@@ -10,6 +10,7 @@ import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/actions/cash_wallet_actions.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/bottom_bar.dart';
 import 'package:vegan_liverpool/services.dart';
+import 'package:vegan_liverpool/utils/log/log.dart';
 
 class MainScreen extends StatefulWidget {
   MainScreen({Key? key}) : super(key: key);
@@ -85,11 +86,19 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void startFirebaseNotifs() {
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    try {
+      FirebaseMessaging.onBackgroundMessage(
+          _firebaseMessagingBackgroundHandler);
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage? remoteMessage) => handleFCM(remoteMessage));
+      FirebaseMessaging.onMessageOpenedApp
+          .listen((RemoteMessage? remoteMessage) => handleFCM(remoteMessage));
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage? remoteMessage) => handleFCM(remoteMessage));
+      FirebaseMessaging.onMessage
+          .listen((RemoteMessage? remoteMessage) => handleFCM(remoteMessage));
+    } catch (err) {
+      log.info('Error: $err');
+    }
+    ;
   }
 
   Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage remoteMessage) async {

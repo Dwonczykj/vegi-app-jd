@@ -1,16 +1,16 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:another_flushbar/flushbar.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_segment/flutter_segment.dart';
+import 'package:redux/redux.dart';
+import 'package:vegan_liverpool/common/router/routes.dart';
 import 'package:vegan_liverpool/constants/enums.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
-import 'package:vegan_liverpool/redux/actions/user_actions.dart';
-import 'package:vegan_liverpool/redux/viewsmodels/backup.dart';
-import 'package:flutter/material.dart';
-import 'package:redux/redux.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/user_state.dart';
-import 'package:vegan_liverpool/common/router/routes.dart';
+import 'package:vegan_liverpool/redux/actions/user_actions.dart';
+import 'package:vegan_liverpool/redux/viewsmodels/backup.dart';
 
 class SplashScreen extends StatefulWidget {
   final void Function(bool isLoggedIn)? onLoginResult;
@@ -125,27 +125,29 @@ class _SplashScreenState extends State<SplashScreen> {
       onInit: onInit,
       converter: LockScreenViewModel.fromStore,
       builder: (_, viewModel) {
-        return Scaffold(
-          body: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: screenGradient,
+        return SafeArea(
+          child: Scaffold(
+            body: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: screenGradient,
+                ),
               ),
-            ),
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.height * .5,
-                  child: Image.asset(
-                    'assets/images/Vegi-Logo-square.png',
-                  ),
-                )
-              ],
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    height: MediaQuery.of(context).size.height * .5,
+                    child: Image.asset(
+                      'assets/images/Vegi-Logo-square.png',
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         );

@@ -128,18 +128,20 @@ class _MyAppState extends State<MyApp> {
         } else {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: Scaffold(
-              body: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomLeft,
-                    colors: screenGradient,
+            home: SafeArea(
+              child: Scaffold(
+                body: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: screenGradient,
+                    ),
                   ),
-                ),
-                child: Center(
-                  child: Image.asset(
-                    'assets/images/Vegi-Logo-square.png',
+                  child: Center(
+                    child: Image.asset(
+                      'assets/images/Vegi-Logo-square.png',
+                    ),
                   ),
                 ),
               ),

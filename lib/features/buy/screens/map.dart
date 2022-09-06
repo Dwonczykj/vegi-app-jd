@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vegan_liverpool/generated/l10n.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/buy_page.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -31,15 +32,17 @@ class _MapScreenState extends State<MapScreen> {
       distinct: true,
       converter: BuyViewModel.fromStore,
       builder: (_, viewModel) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(I10n.of(context).map),
-          ),
-          body: GoogleMap(
-            onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target: _center,
-              zoom: 11.0,
+        return SafeArea(
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(I10n.of(context).map),
+            ),
+            body: GoogleMap(
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(
+                target: _center,
+                zoom: 11.0,
+              ),
             ),
           ),
         );

@@ -1,9 +1,7 @@
-import 'package:direct_select_flutter/direct_select_item.dart';
-import 'package:direct_select_flutter/direct_select_list.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/shared/deliveryMapViewFloatingBar.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/featuredRestaurantsVM.dart';
 
@@ -62,7 +60,8 @@ class _SwitchDeliveryCollectionModalState
                   //   ],
                   // ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    padding:
+                        EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -81,12 +80,15 @@ class _SwitchDeliveryCollectionModalState
                             GestureDetector(
                               onTap: () => {viewmodel.setIsDelivery(true)},
                               child: Container(
-                                child: Text(
-                                  "Delivery",
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w900,
-                                    // backgroundColor: themeShade500,
+                                width: 150,
+                                child: Center(
+                                  child: Text(
+                                    "Delivery",
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w900,
+                                      // backgroundColor: themeShade500,
+                                    ),
                                   ),
                                 ),
                                 decoration: BoxDecoration(
@@ -107,12 +109,15 @@ class _SwitchDeliveryCollectionModalState
                             GestureDetector(
                               onTap: () => {viewmodel.setIsDelivery(false)},
                               child: Container(
-                                child: Text(
-                                  "Collection",
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w900,
-                                    // backgroundColor: themeShade500,
+                                width: 150,
+                                child: Center(
+                                  child: Text(
+                                    "Collection",
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w900,
+                                      // backgroundColor: themeShade500,
+                                    ),
                                   ),
                                 ),
                                 decoration: BoxDecoration(
@@ -170,58 +175,116 @@ class _SwitchDeliveryCollectionModalState
                             //     : SizedBox.shrink(),
                           ],
                         ),
-                        SizedBox(
-                          height: 100,
-                        ),
-                        Container(
-                          margin: EdgeInsets.fromLTRB(5, 50, 5, 10),
-                          child: Card(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: <Widget>[
-                                Expanded(
-                                    child: Padding(
-                                        child: DirectSelectList<String>(
-                                            values: viewmodel.postalCodes,
-                                            defaultItemIndex: 0,
-                                            itemBuilder: (value) =>
-                                                DirectSelectItem<String>(
-                                                  itemHeight: 56,
-                                                  itemBuilder:
-                                                      ((context, value) => Text(
-                                                            value,
-                                                            style: TextStyle(
-                                                                fontSize: 20),
-                                                          )),
-                                                  value: value,
-                                                ),
-                                            focusedItemDecoration:
-                                                _getDslDecoration(),
-                                            onItemSelectedListener:
-                                                (item, index, context) {
-                                              viewmodel.changeOutCode(item);
-                                            }),
-                                        padding: EdgeInsets.only(left: 12))),
-                                Padding(
-                                  padding: EdgeInsets.only(right: 8),
-                                  child: Icon(
-                                    Icons.unfold_more,
-                                    color: themeAccent600,
-                                  ),
-                                )
-                              ],
-                            ),
+                        // SizedBox(
+                        //   height: 100,
+                        // ),
+                        DropdownSearch<String>(
+                          popupProps: PopupProps.menu(
+                            showSelectedItems: true,
+                            // disabledItemFn: (String s) => s.startsWith('I'),
                           ),
-                        )
+                          items: ["L1", "L2", "L3"],
+                          // dropdownDecoratorProps: DropDownDecoratorProps(dropdownSearchDecoration: InputDecoration),
+                          onChanged: (item) {
+                            if (item != null) viewmodel.changeOutCode(item);
+                          },
+                          selectedItem: ["L1", "L2", "L3"].first,
+                        ),
+                        // DirectSelectContainer(
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.all(16.0),
+                        //     child: Column(
+                        //       mainAxisSize: MainAxisSize.min,
+                        //       verticalDirection: VerticalDirection.down,
+                        //       children: <Widget>[
+                        //         Padding(
+                        //           padding: const EdgeInsets.all(8.0),
+                        //           child: Column(
+                        //             children: <Widget>[
+                        //               Container(
+                        //                 alignment:
+                        //                     AlignmentDirectional.centerStart,
+                        //                 margin: EdgeInsets.only(left: 4),
+                        //                 child: Text("Postcode"),
+                        //               ),
+                        //               Padding(
+                        //                 padding: const EdgeInsets.fromLTRB(
+                        //                     0, 8, 0, 0),
+                        //                 child: Card(
+                        //                   child: Row(
+                        //                     mainAxisSize: MainAxisSize.max,
+                        //                     children: <Widget>[
+                        //                       // Container(
+                        //                       //     padding: EdgeInsets.all(4.0),
+                        //                       //     child:
+                        //                       //         SizedBox(height: 150.0),
+                        //                       //     color: Colors.greenAccent),
+                        //                       Container(
+                        //                         color: Colors.purple[100],
+                        //                         constraints: BoxConstraints(
+                        //                             maxHeight: 150,
+                        //                             maxWidth: 200),
+                        //                         padding:
+                        //                             EdgeInsets.only(left: 12),
+                        //                         child: DirectSelectList<String>(
+                        //                             values:
+                        //                                 // viewmodel.postalCodes,
+                        //                                 ['L1', 'L2', 'L3'],
+                        //                             defaultItemIndex: 0,
+                        //                             itemBuilder: (value) =>
+                        //                                 DirectSelectItem<
+                        //                                     String>(
+                        //                                   itemHeight: 56,
+                        //                                   itemBuilder:
+                        //                                       ((context,
+                        //                                               value) =>
+                        //                                           Text(
+                        //                                             value,
+                        //                                             style: TextStyle(
+                        //                                                 fontSize:
+                        //                                                     20),
+                        //                                           )),
+                        //                                   value: value,
+                        //                                 ),
+                        //                             focusedItemDecoration:
+                        //                                 _getDslDecoration(),
+                        //                             onItemSelectedListener:
+                        //                                 (item, index, context) {
+                        //                               viewmodel
+                        //                                   .changeOutCode(item);
+                        //                             }),
+                        //                       ),
+                        //                       Container(
+                        //                           child: SizedBox(height: 400),
+                        //                           color: Colors.blueAccent),
+                        //                       Padding(
+                        //                         padding:
+                        //                             EdgeInsets.only(right: 8),
+                        //                         child: Icon(
+                        //                           Icons.unfold_more,
+                        //                           color: Colors.black38,
+                        //                         ),
+                        //                       )
+                        //                     ],
+                        //                   ),
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-            DeliveryMapViewFloatingBar(
-              selectedOutCode: _dropdownValue,
-            ),
+            // DeliveryMapViewFloatingBar(
+            //   selectedOutCode: _dropdownValue,
+            // ),
           ],
         );
       },

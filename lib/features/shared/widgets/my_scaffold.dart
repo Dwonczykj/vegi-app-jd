@@ -1,4 +1,5 @@
 import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vegan_liverpool/constants/theme.dart';
@@ -18,31 +19,35 @@ class MyScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      appBar: MyAppBar(
-        height: kToolbarHeight,
-        child: AppBar(
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
-          iconTheme: IconThemeData(
-            color: Theme.of(context).colorScheme.onSurface, //change your color here
-          ),
-          automaticallyImplyLeading: automaticallyImplyLeading,
-          backgroundColor: themeShade300,
-          centerTitle: true,
-          title: Text(
-            title,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
-              fontFamily: 'Europa',
-              color: Theme.of(context).colorScheme.onSurface,
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+        appBar: MyAppBar(
+          height: kToolbarHeight,
+          child: AppBar(
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
+            iconTheme: IconThemeData(
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface, //change your color here
             ),
-            softWrap: true,
+            automaticallyImplyLeading: automaticallyImplyLeading,
+            backgroundColor: themeShade300,
+            centerTitle: true,
+            title: Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+                fontFamily: 'Europa',
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+              softWrap: true,
+            ),
           ),
         ),
+        body: body,
       ),
-      body: body,
     );
   }
 }

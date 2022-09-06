@@ -36,9 +36,13 @@ void main() async {
     DeviceOrientation.portraitUp,
   ]);
 
+  // const env = 'prod';
+  const env = 'qa';
+  // const env = 'dev';
+
   //choose a dev environment and load that file from .env folder
-  // final envFile = env == 'prod' ? '.env' : '.env_qa';
-  await dotenv.load(fileName: 'environment/.env_dev');
+  final envFile = env == 'prod' ? '.env' : '.env_${env}';
+  await dotenv.load(fileName: 'environment/${envFile}');
 
 // initialize stripe for payment
   new StripeService()..init();

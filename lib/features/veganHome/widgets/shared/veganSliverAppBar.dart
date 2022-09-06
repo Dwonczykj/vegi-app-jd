@@ -103,7 +103,8 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(50),
-                              child: CachedNetworkImage(
+                              child: viewmodel.avatarUrl.isNotEmpty
+                                  ? CachedNetworkImage(
                                 width: 40,
                                 height: 40,
                                 imageUrl: viewmodel.avatarUrl,
@@ -119,7 +120,12 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                                   image: imageProvider,
                                   fit: BoxFit.fill,
                                 ),
-                              ),
+                                    )
+                                  : CircleAvatar(
+                                      backgroundImage:
+                                          AssetImage('assets/images/anom.png'),
+                                      radius: 30,
+                                    ),
                             ),
                             viewmodel.listOfScheduledOrders.length > 0
                                 ? Positioned(

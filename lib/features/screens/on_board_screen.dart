@@ -91,124 +91,132 @@ class _OnBoardScreenState extends State<OnBoardScreen> with TickerProviderStateM
           .animate(screenColor, tween: ColorTween(begin: themeShade700, end: themeShade1100))
       ..addScene(begin: const Duration(seconds: 3), duration: const Duration(seconds: 1))
           .animate(screenColor, tween: ColorTween(begin: themeShade1100, end: themeShade1200));
-    return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            flex: 20,
-            child: CustomAnimation<TimelineValue<Color>>(
-              tween: _tween, // Pass in tween
-              duration: _tween.duration, // Obtain duration
-              builder: (context, child, value) {
-                return Container(
-                  color: value.get(screenColor),
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: Stack(
-                          children: <Widget>[
-                            PageView.builder(
-                              onPageChanged: (page) {
-                                if (page == (welcomeScreens.length - 1)) {
-                                  setState(() {
-                                    _bottomRowOpacity = 0;
-                                  });
-                                } else
-                                  setState(() {
-                                    _bottomRowOpacity = 1;
-                                  });
-                              },
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: welcomeScreens.length,
-                              controller: _pageController,
-                              itemBuilder: (BuildContext context, int index) =>
-                                  welcomeScreens[index % welcomeScreens.length],
-                            ),
-                            Positioned(
-                              bottom: 25.0,
-                              left: MediaQuery.of(context).size.width * 0.05,
-                              right: MediaQuery.of(context).size.width * 0.05,
-                              child: AnimatedOpacity(
-                                duration: Duration(seconds: 1),
-                                opacity: _bottomRowOpacity,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () => previousPage(),
-                                      child: CustomPaint(
-                                        painter: CustomButton1(),
-                                        child: SizedBox(
-                                          child: Center(
-                                            child: Text(
-                                              "Back",
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontFamily: "Fat Cheeks",
-                                                fontSize: 22,
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            Expanded(
+              flex: 20,
+              child: CustomAnimation<TimelineValue<Color>>(
+                tween: _tween, // Pass in tween
+                duration: _tween.duration, // Obtain duration
+                builder: (context, child, value) {
+                  return Container(
+                    color: value.get(screenColor),
+                    child: Column(
+                      children: <Widget>[
+                        Expanded(
+                          child: Stack(
+                            children: <Widget>[
+                              PageView.builder(
+                                onPageChanged: (page) {
+                                  if (page == (welcomeScreens.length - 1)) {
+                                    setState(() {
+                                      _bottomRowOpacity = 0;
+                                    });
+                                  } else
+                                    setState(() {
+                                      _bottomRowOpacity = 1;
+                                    });
+                                },
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: welcomeScreens.length,
+                                controller: _pageController,
+                                itemBuilder:
+                                    (BuildContext context, int index) =>
+                                        welcomeScreens[
+                                            index % welcomeScreens.length],
+                              ),
+                              Positioned(
+                                bottom: 25.0,
+                                left: MediaQuery.of(context).size.width * 0.05,
+                                right: MediaQuery.of(context).size.width * 0.05,
+                                child: AnimatedOpacity(
+                                  duration: Duration(seconds: 1),
+                                  opacity: _bottomRowOpacity,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () => previousPage(),
+                                        child: CustomPaint(
+                                          painter: CustomButton1(),
+                                          child: SizedBox(
+                                            child: Center(
+                                              child: Text(
+                                                "Back",
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontFamily: "Fat Cheeks",
+                                                  fontSize: 22,
+                                                ),
                                               ),
                                             ),
+                                            width: 70,
+                                            height: 70 * 0.7746031746031746,
                                           ),
-                                          width: 70,
-                                          height: 70 * 0.7746031746031746,
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width * 0.075,
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.all(20.0),
-                                      child: Center(
-                                        child: SmoothPageIndicator(
-                                          controller: _pageController,
-                                          count: welcomeScreens.length,
-                                          effect: JumpingDotEffect(
-                                            dotWidth: 9.0,
-                                            dotHeight: 9.0,
-                                            activeDotColor: Color(0xFF696B6D),
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.075,
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.all(20.0),
+                                        child: Center(
+                                          child: SmoothPageIndicator(
+                                            controller: _pageController,
+                                            count: welcomeScreens.length,
+                                            effect: JumpingDotEffect(
+                                              dotWidth: 9.0,
+                                              dotHeight: 9.0,
+                                              activeDotColor: Color(0xFF696B6D),
+                                            ),
+                                            onDotClicked: gotoPage,
                                           ),
-                                          onDotClicked: gotoPage,
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width * 0.075,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () => nextPage(),
-                                      child: CustomPaint(
-                                        painter: CustomButton2(),
-                                        child: SizedBox(
-                                          child: Center(
-                                            child: Text(
-                                              "Next",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "Fat Cheeks",
-                                                fontSize: 22,
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.075,
+                                      ),
+                                      GestureDetector(
+                                        onTap: () => nextPage(),
+                                        child: CustomPaint(
+                                          painter: CustomButton2(),
+                                          child: SizedBox(
+                                            child: Center(
+                                              child: Text(
+                                                "Next",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: "Fat Cheeks",
+                                                  fontSize: 22,
+                                                ),
                                               ),
                                             ),
+                                            width: 75,
+                                            height: 75 * 0.6551102204408818,
                                           ),
-                                          width: 75,
-                                          height: 75 * 0.6551102204408818,
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

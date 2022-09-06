@@ -24,10 +24,15 @@ class _OutcodeCardState extends State<OutcodeCard> {
     }
 
     // String? postcode = 'Suggestion(description: ${widget.postalCode})';
-
-    List<Location> possibleLocations =
-        await locationFromAddress(widget.postalCode)
-            .onError((error, stackTrace) => []);
+    List<Location> possibleLocations = <Location>[];
+    try {
+      possibleLocations =
+          await locationFromAddress('Liverpool, ${widget.postalCode}')
+              .onError((error, stackTrace) => <Location>[]);
+    } catch (err) {
+      print('Error: $err');
+    }
+    ;
 
     if (possibleLocations.isNotEmpty) {
       // setState(() {

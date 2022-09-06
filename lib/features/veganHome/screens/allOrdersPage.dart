@@ -8,7 +8,6 @@ import 'package:vegan_liverpool/features/veganHome/widgets/shared/emptyStatePage
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/account.dart';
 import 'package:vegan_liverpool/services.dart';
-import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
 
 class AllOrdersPage extends StatefulWidget {
   const AllOrdersPage({Key? key}) : super(key: key);
@@ -38,26 +37,29 @@ class _AllOrdersPageState extends State<AllOrdersPage> {
       converter: AccountViewModel.fromStore,
       onInit: (store) => fetchOrdersList(store.state.userState.walletAddress),
       builder: (_, viewmodel) {
-        return Scaffold(
-          appBar: CustomAppBar(
-            pageTitle: "My Orders",
+        return SafeArea(
+          child: Scaffold(
+            appBar: CustomAppBar(
+              pageTitle: "My Orders",
+            ),
+            body: _isLoading
+                ? Center(child: CircularProgressIndicator())
+                : _isEmpty
+                    ? EmptyStatePage(
+                        emoji: "😐",
+                        title: "You have no upcoming orders… yet!",
+                        subtitle:
+                            "If this is incorrect, please contact our Support team for assistance. Details are in our FAQ section.",
+                      )
+                    : ListView.separated(
+                        padding: const EdgeInsets.symmetric(vertical: 30),
+                        itemBuilder: (_, index) =>
+                            SingleOrderCard(order: listOfOrders[index]),
+                        separatorBuilder: (_, index) => Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                            ),
+                        itemCount: listOfOrders.length),
           ),
-          body: _isLoading
-              ? Center(child: CircularProgressIndicator())
-              : _isEmpty
-                  ? EmptyStatePage(
-                      emoji: "😐",
-                      title: "You have no upcoming orders… yet!",
-                      subtitle:
-                          "If this is incorrect, please contact our Support team for assistance. Details are in our FAQ section.",
-                    )
-                  : ListView.separated(
-                      padding: const EdgeInsets.symmetric(vertical: 30),
-                      itemBuilder: (_, index) => SingleOrderCard(order: listOfOrders[index]),
-                      separatorBuilder: (_, index) => Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                          ),
-                      itemCount: listOfOrders.length),
         );
       },
     );
@@ -158,7 +160,7 @@ class _SingleOrderCardState extends State<SingleOrderCard> {
                 separatorBuilder: (_, index) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                 ),
-                itemCount: widget.order['products'].length,
+                itemCount: widget.order['products'].wordsLength,
               ),
               widget.order['isCollection']
                   ? SizedBox.shrink()

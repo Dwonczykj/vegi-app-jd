@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:vegan_liverpool/features/veganHome/Helpers/helpers.dart';
-import 'package:vegan_liverpool/features/veganHome/widgets/shared/switchDeliveryCollectionModal.dart';
+import 'package:vegan_liverpool/features/veganHome/widgets/menu/detailMenuItemView.dart';
 import 'package:vegan_liverpool/models/app_state.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
 import 'package:vegan_liverpool/redux/viewsmodels/detailMenuItem.dart';
@@ -97,7 +97,7 @@ class _SingleFeaturedMenuItemState extends State<SingleFeaturedMenuItem> {
               viewmodel.setMenuItem(widget.menuItem),
               showBarModalBottomSheet(
                 context: context,
-                builder: (context) => SwitchDeliveryCollectionModal(),
+                builder: (context) => DetailMenuItemView(),
               ),
             },
           ),
