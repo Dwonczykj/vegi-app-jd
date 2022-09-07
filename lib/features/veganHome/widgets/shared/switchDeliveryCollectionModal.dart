@@ -28,40 +28,16 @@ class _SwitchDeliveryCollectionModalState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Stack(
-                  //   children: [
-                  //     Container(
-                  //       width: double.infinity,
-                  //       height: 350.0,
-                  //       child: CachedNetworkImage(
-                  //         imageUrl: viewmodel.menuItem!.imageURL,
-                  //         fit: BoxFit.cover,
-                  //       ),
-                  //     ),
-                  //     Positioned(
-                  //       bottom: -1,
-                  //       child: Container(
-                  //         decoration: BoxDecoration(
-                  //           boxShadow: [
-                  //             BoxShadow(
-                  //               color: Colors.grey[800]!,
-                  //               offset: Offset(0, -5),
-                  //               blurRadius: 10,
-                  //             )
-                  //           ],
-                  //           borderRadius: BorderRadius.vertical(top: Radius.circular(100)),
-                  //           color: Colors.white,
-                  //         ),
-                  //         width: MediaQuery.of(context).size.width,
-                  //         height: 30,
-                  //       ),
-                  //     ),
-
-                  //   ],
-                  // ),
                   Container(
                     padding:
                         EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: colorToWhiteGradient,
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                    ),
                     constraints: BoxConstraints(minHeight: 240),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,15 +196,6 @@ class _SwitchDeliveryCollectionModalState
           ],
         );
       },
-    );
-  }
-
-  _getDslDecoration() {
-    return BoxDecoration(
-      border: BorderDirectional(
-        bottom: BorderSide(width: 1, color: Colors.black12),
-        top: BorderSide(width: 1, color: Colors.black12),
-      ),
     );
   }
 }

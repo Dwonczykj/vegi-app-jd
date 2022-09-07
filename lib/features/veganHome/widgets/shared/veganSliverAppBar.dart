@@ -59,11 +59,12 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                                   SwitchDeliveryCollectionModal(),
                             ),
                           },
-                          child: Container(
-                            color: themeAccent100,
-                            child: ClipRRect(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15.0)),
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(5)),
+                            child: Container(
+                              padding: EdgeInsets.all(5.0),
+                              color: greyShade50,
                               child: Row(
                                 children: [
                                   Text(

@@ -31,6 +31,12 @@ var color4 = Color(0xFFD9EDDF);
 var color5 = Color(0xFFC3F9FF);
 var color6 = Color(0xFF487E91);
 
+const Color greyShade10 = Color.fromARGB(10, 200, 200, 200);
+const Color greyShade50 = Color.fromARGB(50, 180, 180, 180);
+const Color greyShade100 = Color.fromARGB(100, 0, 0, 0);
+const Color greyShade200 = Color.fromARGB(151, 50, 50, 50);
+const Color greyShade300 = Color.fromARGB(195, 100, 100, 100);
+
 //Vegi Color Scheme
 const Color themeShade100 = Color(0xFFF1F8EF);
 const Color themeShade200 = Color(0xFFE2F1DE);
@@ -80,7 +86,13 @@ const List<Color> themeColors = [
   themeShade1200,
 ];
 
-final List<Color> colorToWhiteGradient = [themeShade400, themeShade300, themeShade300, themeShade200, Colors.white];
+final List<Color> colorToWhiteGradient = [
+  themeShade400,
+  themeShade300,
+  themeShade300,
+  themeShade200,
+  Colors.white
+];
 
 ThemeData getColorScheme({required bool useFlex, required bool isDark}) {
   if (useFlex) {

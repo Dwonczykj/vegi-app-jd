@@ -38,7 +38,8 @@ class _SlotTimingsViewState extends State<SlotTimingsView> {
                 child: Row(
                   children: [
                     Text(
-                      "Schedule Order",
+                      "Schedule " +
+                          (viewmodel.isDelivery ? 'Delivery' : 'Collection'),
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
                     ),
