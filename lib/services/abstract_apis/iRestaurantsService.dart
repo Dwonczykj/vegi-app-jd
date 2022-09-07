@@ -1,10 +1,13 @@
 // import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dio/src/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:vegan_liverpool/models/admin/user.dart';
 import 'package:vegan_liverpool/models/restaurant/eligibleDeliveryCollectionDates.dart';
 import 'package:vegan_liverpool/models/restaurant/fullfilmentMethods.dart';
 import 'package:vegan_liverpool/models/restaurant/productOptionsCategory.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantItem.dart';
 import 'package:vegan_liverpool/models/restaurant/restaurantMenuItem.dart';
+import 'package:vegan_liverpool/services/abstract_apis/httpService.dart';
 
 const Object requiresAdmin = _RequiresAdmin();
 
@@ -57,7 +60,10 @@ abstract class IRestaraurantManagementService {
   Future<bool> deregister({required String phoneNumber});
 }
 
-abstract class IRestaraurantDeliveryService {
+abstract class IRestaraurantDeliveryService extends HttpService {
+  IRestaraurantDeliveryService(Dio dio)
+      : super(dio, dotenv.env['VEGI_EATS_BACKEND']!);
+
   // User Details
   Future<User?> signUp(
       {required String countryCode,
