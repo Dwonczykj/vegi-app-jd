@@ -59,18 +59,27 @@ class _VeganSliverAppBarState extends State<VeganSliverAppBar> {
                                   SwitchDeliveryCollectionModal(),
                             ),
                           },
-                          child: Row(
-                            children: [
-                              Text(
-                                viewmodel.isDelivery
-                                    ? "Delivering To "
-                                    : "Collection",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                          child: Container(
+                            color: themeAccent100,
+                            child: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15.0)),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    viewmodel.isDelivery
+                                        ? "Delivery (${viewmodel.selectedPostalCode})"
+                                        : "Collection",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  Icon(Icons.arrow_drop_down,
+                                      color: themeShade600)
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                         // GestureDetector(

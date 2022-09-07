@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:injectable/injectable.dart';
 
-@lazySingleton
 abstract class HttpService {
   final Dio dio;
   String get baseUrl => this.dio.options.baseUrl;

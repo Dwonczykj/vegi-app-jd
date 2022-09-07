@@ -14,7 +14,9 @@ HomePageState _getFeaturedRestaurants(
   HomePageState state,
   UpdateFeaturedRestaurants action,
 ) {
-  return state.copyWith(featuredRestaurants: action.listOfFeaturedRestaurants);
+  return state.copyWith(
+      featuredRestaurants: action.listOfFeaturedRestaurants,
+      selectedPostalCode: action.forPostalCode);
 }
 
 HomePageState _setIsLoadingHomePage(HomePageState state, SetIsLoadingHomePage action) {

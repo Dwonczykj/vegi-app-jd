@@ -14,7 +14,9 @@ class UpdateRestaurantCategories {
 
 class UpdateFeaturedRestaurants {
   final List<RestaurantItem> listOfFeaturedRestaurants;
-  UpdateFeaturedRestaurants({required this.listOfFeaturedRestaurants});
+  final String forPostalCode;
+  UpdateFeaturedRestaurants(
+      {required this.listOfFeaturedRestaurants, required this.forPostalCode});
 }
 
 class SetIsLoadingHomePage {
@@ -51,9 +53,11 @@ ThunkAction fetchFeaturedRestaurants({String outCode = "L1"}) {
   return (Store store) async {
     try {
       store.dispatch(SetIsLoadingHomePage(true));
-      List<RestaurantItem> restaurants = await peeplEatsService.featuredRestaurants(outCode);
+      List<RestaurantItem> restaurants =
+          await peeplEatsService.featuredRestaurants(outCode);
 
-      store.dispatch(UpdateFeaturedRestaurants(listOfFeaturedRestaurants: restaurants));
+      store.dispatch(UpdateFeaturedRestaurants(
+          listOfFeaturedRestaurants: restaurants, forPostalCode: outCode));
       store.dispatch(fetchMenuItemsForRestaurant());
       store.dispatch(SetIsLoadingHomePage(false));
     } catch (e, s) {
@@ -70,7 +74,8 @@ ThunkAction fetchFeaturedRestaurants({String outCode = "L1"}) {
 ThunkAction fetchMenuItemsForRestaurant() {
   return (Store store) async {
     try {
-      List<RestaurantItem> currentList = store.state.homePageState.featuredRestaurants;
+      List<RestaurantItem> currentList =
+          store.state.homePageState.featuredRestaurants;
 
       await Future.forEach(
         currentList,
@@ -81,7 +86,9 @@ ThunkAction fetchMenuItemsForRestaurant() {
         },
       );
 
-      store.dispatch(UpdateFeaturedRestaurants(listOfFeaturedRestaurants: currentList));
+      store.dispatch(UpdateFeaturedRestaurants(
+          listOfFeaturedRestaurants: currentList,
+          forPostalCode: store.state.homePageState.selectedPostalCode));
     } catch (e, s) {
       log.error('ERROR - fetchMenuItemsForRestaurant $e');
       await Sentry.captureException(

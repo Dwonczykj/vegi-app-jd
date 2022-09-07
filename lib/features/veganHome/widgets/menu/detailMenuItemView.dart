@@ -91,6 +91,7 @@ class _DetailMenuItemViewState extends State<DetailMenuItemView> {
                         ),
                         ProductOptionsView(),
                         SizedBox(
+                          //TODO: Ask @agenthesh about this line ? Do we need it because of the height of the DetailMenuViewFloatingBar below that is Stack(ed) in the layer above?
                           height: 100,
                         ),
                       ],
