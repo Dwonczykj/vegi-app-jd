@@ -424,6 +424,7 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback,
               "lineTwo": selectedAddress.addressLine2 +
                   ", " +
                   selectedAddress.townCity,
+              "city": selectedAddress.townCity,
               "postCode": selectedAddress.postalCode,
               "deliveryInstructions":
                   store.state.cartState.deliveryInstructions,
@@ -445,6 +446,7 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback,
               "phoneNumber": "12345678910",
               "lineOne": "10 Collection Street",
               "lineTwo": "",
+              "city": "",
               "postCode": "L7 0HG",
               "deliveryInstructions":
                   store.state.cartState.deliveryInstructions,
@@ -481,9 +483,9 @@ ThunkAction prepareAndSendOrder(void Function(String errorText) errorCallback,
               result['orderID'].toString(), result['paymentIntentID']));
 
           //subscribe to firebase topic of orderID
-
-          firebaseMessaging
-              .subscribeToTopic('order-' + result['orderID'].toString());
+          final String fbOrderId = 'order-' + result['orderID'].toString();
+          // if(FirebaseInjectableModule.assertTopicNameIsValid(fbOrderId))
+          firebaseMessaging.subscribeToTopic(fbOrderId);
 
           successCallback();
         } else {

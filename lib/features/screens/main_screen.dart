@@ -109,7 +109,15 @@ class _MainScreenState extends State<MainScreen> {
 
   void handleFCM(RemoteMessage? remoteMessage) async {
     if (remoteMessage != null) {
-      print("GOT MESSAGE FROM FIREBASE: ${remoteMessage.data}");
+      log.info("GOT MESSAGE FROM FIREBASE: ${remoteMessage.data}");
+      if (remoteMessage.notification != null) {
+        log.info(
+            'FIREBASE MESSAGE also contained a notification: ${remoteMessage.notification}');
+      }
+      if (remoteMessage.messageType?.toLowerCase().trim().contains('order') ==
+          true) {
+        context.router.push(AllOrdersPage());
+      }
     }
   }
 }
